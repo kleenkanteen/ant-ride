@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable}`}>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="flex flex-col gap-4">
-          <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] border-blue-500 border-2">
+          <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             ant ride
           </h1>
           {children}

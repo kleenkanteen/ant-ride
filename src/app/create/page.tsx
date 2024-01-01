@@ -5,12 +5,19 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
 export default function Create() {
     return (
+        <ThemeProvider theme={darkTheme}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-
-            <div>
+            <div className="flex flex-col gap-4">
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text">Event name: </span>
@@ -27,11 +34,17 @@ export default function Create() {
                     <div className="label">
                         <span className="label-text">Date: </span>
                     </div>
-                    <input type="text" placeholder="Date..." className="input input-bordered w-full max-w-xs" />
+                    <MobileDatePicker />
                 </label>
-                <MobileDatePicker />
-                <MobileTimePicker />
+                <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                        <span className="label-text">Time: </span>
+                    </div>
+                    <MobileTimePicker />
+                </label>
+                <button className="btn btn-outline btn-md my-4">Submit</button>
             </div>
         </LocalizationProvider>
+        </ThemeProvider>
     );
 };
