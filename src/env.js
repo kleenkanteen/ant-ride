@@ -8,6 +8,8 @@ export const env = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
+    SUPABASE_URL: z.string(),
+    SUPABASE_SERVICE_ROLE_KEY: z.string(),
   },
 
   /**
@@ -17,6 +19,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_SUPABASE_URL: z.string(),
   },
 
   /**
