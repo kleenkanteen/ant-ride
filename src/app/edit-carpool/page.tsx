@@ -22,7 +22,9 @@ export default function Edit(){
 
     const onSubmit = (data) => {
         console.log(data);
-        router.push(`/data?code=${data.code}`);
+        router.push(`/data?code=${data.edit_code}`);
+        //router.push(`/data?join_code=${data.join_code}&edit_code=${data.edit_code}`);
+        //might use this instead if you want to change response based on both codes instead of just one
     };
 
     const schema = yup.object().shape({
@@ -44,16 +46,16 @@ export default function Edit(){
                             <span className="label-text">Edit code: </span>
                         </div>
                         <input type="text" placeholder="" className="input input-bordered w-full max-w-xs" 
-                        {...register("join_code")}/>
-                        <p>{errors.join_code?.message}</p>
+                        {...register("edit_code")}/>
+                        <p>{errors.edit_code?.message}</p>
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text">Join code: </span>
                         </div>
                         <input type="text" placeholder="" className="input input-bordered w-full max-w-xs" 
-                        {...register("edit_code")}/>
-                        <p>{errors.edit_code?.message}</p>
+                        {...register("join_code")}/>
+                        <p>{errors.join_code?.message}</p>
                     </label>
                 <button className="btn btn-outline btn-md my-4">Submit</button>
                 </div>
@@ -61,3 +63,14 @@ export default function Edit(){
         </ThemeProvider>
     );
 }
+
+/*import { useRouter } from 'next/router';
+
+I think we have to use the second one
+import { useRouter } from 'next/navigation';
+
+
+export default function DataPage() {
+   const router = useRouter();
+   const { join_code, edit_code } = router.query;*/
+// on another page, this will allow you to access the data
