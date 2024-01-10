@@ -12,9 +12,9 @@ import { useRouter } from 'next/navigation';
 
 const darkTheme = createTheme({
     palette: {
-      mode: 'dark',
+        mode: 'dark',
     },
-  });
+});
 
 export default function Join() {
 
@@ -31,30 +31,31 @@ export default function Join() {
     });
 
 
-    const {register, handleSubmit, formState: {errors} } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 
 
     return (
-            <ThemeProvider theme={darkTheme}>
-                <form onSubmit= {handleSubmit(onSubmit)}>
+        <ThemeProvider theme={darkTheme}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-4">
-                   
+
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text">Join code : </span>
-                    </div>
-                    <input type="text"  placeholder="" className="input input-bordered w-full max-w-xs"
-                    {...register("code")} /> 
-                    <p>{errors.code?.message}</p>
+                        </div>
+                        <input type="text" placeholder="" className="input input-bordered w-full max-w-xs" 
+                        {...register("code")}/>
+                        {errors.code?.message && <br />}
+                        <p className="text-red-500">{errors.code?.message}</p>
                     </label>
-                    
+
                     <button className="btn btn-outline btn-md my-4">Submit</button>
-                    
+
                 </div>
-                </form>
-            </ThemeProvider>
+            </form>
+        </ThemeProvider>
     );
 };
 //pattern="[A-Za-z0-9]+" add after text if you want html version
@@ -69,4 +70,4 @@ export default function DataPage() {
    const router = useRouter();
    const { code } = router.query;*/
 
-   // to use the code of the page
+// to use the code of the page
