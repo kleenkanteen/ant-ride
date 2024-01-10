@@ -26,8 +26,8 @@ export default function Edit(){
     };
 
     const schema = yup.object().shape({
-        join_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Invalid character(s) entered").required(),
-        edit_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Invalid character(s) entered").required()
+        join_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
+        edit_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required()
         //, confirmPassword:yup.string().oneOf([yup.ref("password"), null]).required()
     });
     
@@ -41,19 +41,21 @@ export default function Edit(){
                 <div className="flex flex-col gap-4">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
-                            <span className="label-text">Edit code: </span>
-                        </div>
-                        <input type="text" placeholder="" className="input input-bordered w-full max-w-xs" 
-                        {...register("join_code")}/>
-                        <p>{errors.join_code?.message}</p>
-                    </label>
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
                             <span className="label-text">Join code: </span>
                         </div>
                         <input type="text" placeholder="" className="input input-bordered w-full max-w-xs" 
+                        {...register("join_code")}/>
+                        {errors.edit_code?.message && <br />}
+                        <p className="text-red-500">{errors.join_code?.message}</p>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                            <span className="label-text">Edit code: </span>
+                        </div>
+                        <input type="text" placeholder="" className="input input-bordered w-full max-w-xs" 
                         {...register("edit_code")}/>
-                        <p>{errors.edit_code?.message}</p>
+                        {errors.edit_code?.message && <br />}
+                        <p className="text-red-500" >{errors.edit_code?.message}</p>
                     </label>
                 <button className="btn btn-outline btn-md my-4">Submit</button>
                 </div>
