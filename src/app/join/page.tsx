@@ -50,9 +50,7 @@ export default function Join() {
                         {errors.code?.message && <br />}
                         <p className="text-red-500">{errors.code?.message}</p>
                     </label>
-
                     <button className="btn btn-outline btn-md my-4">Submit</button>
-
                 </div>
             </form>
         </ThemeProvider>
