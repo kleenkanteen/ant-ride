@@ -1,14 +1,10 @@
 "use client"
 
-import Link from "next/link";
-
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from 'next/navigation';
-
-
 
 const darkTheme = createTheme({
     palette: {
@@ -56,16 +52,3 @@ export default function Join() {
         </ThemeProvider>
     );
 };
-//pattern="[A-Za-z0-9]+" add after text if you want html version
-
-//could change input type to "password" based on video.
-
-//<button className="btn btn-outline btn-md my-4">Submit</button>
-
-/*import { useRouter } from 'next/navigation';
-
-export default function DataPage() {
-   const router = useRouter();
-   const { code } = router.query;*/
-
-// to use the code of the page

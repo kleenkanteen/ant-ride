@@ -6,6 +6,12 @@ before the event starts, everyone gets a text message of their assigned
 driver. The groups are auto created as well as made to minimize total 
 distance travelled. No such website exists as of now.
 
+When I shared this idea with a researcher who worked at a hospital.
+He said that in 2018, workers of GO trains striked which many of 
+his fellow hospital workers rode. On the internal message boards, 
+people tried coordinating carpools. I can only assume it was tedious 
+messaging people back and forth, finding out how far they lived near each other.
+
 Team of 3. I (Sabih) had the idea and invited my 2 teammates. I'm fighting climate change one line at a time.
 
 ## Tech stack
