@@ -23,7 +23,7 @@ export function ParticipantDetails({ register, errors, onSubmit }) {
             </label>
             <div className="form-control">
                 <label className="label cursor-pointer">
-                    <span className="label-text">Can you pickup others? </span>
+                    <span className="label-text">Can pickup others: </span>
                     <input type="checkbox" className="checkbox checkbox-primary"
                         {...register("can_pickup")} />
                 </label>

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import { useRouter } from 'next/navigation';
+import { ParticipantDetails } from '@/components/participantDetails';
 
 interface IParticipantDetails {
     event_code: string
@@ -37,7 +38,7 @@ export default function Join() {
                         {errors.event_code?.message && <br />}
                         <p className="text-red-500">{errors.event_code?.message}</p>
                     </label>
-                    <button className="btn btn-outline btn-md my-4">Submit</button>
+                    <ParticipantDetails register={register} errors={errors} onSubmit={handleSubmit(onSubmit)} />
                 </div>
             </form>
     );
