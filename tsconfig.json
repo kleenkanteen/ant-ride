@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-  ],
+, "src/app/api/validateEvent."  ],
   "exclude": ["node_modules"]
 }
