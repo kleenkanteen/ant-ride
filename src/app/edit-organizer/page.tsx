@@ -1,18 +1,34 @@
 "use client"
 
-import Link from "next/link";
-
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { CarpoolDetails } from '@/components/carpoolDetails';
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
     },
+});
+
+interface IEditDetails {
+    event_code: string;
+    edit_code: string;
+    event_name: string;
+    location: string;
+    date: Date;
+    time: Date;
+}
+
+const schema = yup.object().shape({
+    event_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
+    edit_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
+    event_name: yup.string().max(40).required(),
+    location: yup.string().max(40).required(),
+    date: yup.date().required(),
+    time: yup.date().required(),
 });
 
 export default function Edit() {
@@ -26,18 +42,8 @@ export default function Edit() {
         //might use this instead if you want to change response based on both codes instead of just one
     };
 
-    const schema = yup.object().shape({
-        join_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
-        edit_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
-        event_name: yup.string().max(40).required(),
-        location: yup.string().max(40).required(),
-        date: yup.date().required(),
-        time: yup.date().required(),
-        //, confirmPassword:yup.string().oneOf([yup.ref("password"), null]).required()
-    });
-
     const { register, handleSubmit, control, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver<IEditDetails>(schema),
     });
 
     return (
@@ -46,18 +52,18 @@ export default function Edit() {
                 <div className="flex flex-col gap-4">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
-                            <span className="label-text">Join code: </span>
+                            <span className="label-text">Event code: </span>
                         </div>
-                        <input type="text" placeholder="" className="input input-bordered w-full max-w-xs"
-                            {...register("join_code")} />
-                        {errors.edit_code?.message && <br />}
-                        <p className="text-red-500">{errors.join_code?.message}</p>
+                        <input type="text" className="input input-bordered w-full max-w-xs"
+                            {...register("event_code")} />
+                        {errors.event_code?.message && <br />}
+                        <p className="text-red-500">{errors.event_code?.message}</p>
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text">Edit code: </span>
                         </div>
-                        <input type="text" placeholder="" className="input input-bordered w-full max-w-xs"
+                        <input type="text" className="input input-bordered w-full max-w-xs"
                             {...register("edit_code")} />
                         {errors.edit_code?.message && <br />}
                         <p className="text-red-500" >{errors.edit_code?.message}</p>

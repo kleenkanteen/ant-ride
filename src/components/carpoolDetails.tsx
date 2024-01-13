@@ -4,10 +4,7 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller, Control } from 'react-hook-form';
-import * as yup from 'yup';
+import { Controller } from 'react-hook-form';
 
 export function CarpoolDetails({ register, errors, onSubmit, control }) {
     return (
@@ -17,7 +14,7 @@ export function CarpoolDetails({ register, errors, onSubmit, control }) {
                     <div className="label">
                         <span className="label-text">Event name: </span>
                     </div>
-                    <input type="text" placeholder="Name..." max="40" className="input input-bordered w-full max-w-xs"
+                    <input type="text" max="40" className="input input-bordered w-full max-w-xs"
                         {...register("event_name")} />
                     {errors.event_name?.message && <br />}
                     <p className="text-red-500">{errors.event_name?.message}</p>
@@ -26,7 +23,7 @@ export function CarpoolDetails({ register, errors, onSubmit, control }) {
                     <div className="label">
                         <span className="label-text">Location: </span>
                     </div>
-                    <input type="text" placeholder="Paste the full address: " max="40" className="input input-bordered w-full max-w-xs"
+                    <input type="text" max="40" className="input input-bordered w-full max-w-xs"
                         {...register("location")} />
                     {errors.location?.message && <br />}
                     <p className="text-red-500">{errors.location?.message}</p>
