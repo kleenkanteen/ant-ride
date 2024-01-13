@@ -13,17 +13,17 @@ export type CarpoolData = z.infer<typeof CarpoolDataSchema>;
 
 // Interface for Users
 export interface User {
-    id: number; // or string
+    id: string; 
     name: string;
     email: string;
-    phone_number: string;
+    phone_number: number;
 }
 
 // Interface for Participants
 export interface Participant {
-    id: number; // or string
-    user_id: number; // or string
-    event_id: number; // or string
+    id: string; 
+    user_id: string; 
+    event_id: string; 
     role: 'driver' | 'rider';
     address: string;
     pickup_capacity?: number; // Optional, only for drivers
@@ -32,8 +32,21 @@ export interface Participant {
 
 // Interface for Rides
 export interface Ride {
-    id: number; // or string
-    carpool_event_id: number; // or string
-    driver_id: number; // or string
-    rider_ids: number[]; // or string[] if using UUIDs
+    id: string;
+    carpool_event_id: string; 
+    driver_id: string; 
+    rider_ids: string[]; 
+}
+
+// Interface for join car pool request
+export interface JoinCarpoolRequest {
+    id: string; 
+    carpool_event_code: string; 
+    name: string; 
+    number: number; 
+}
+
+// Interface for validate car pool request
+export interface ValidateCarpoolRequest {
+    carpool_event_code: string; 
 }

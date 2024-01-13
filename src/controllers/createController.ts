@@ -12,7 +12,7 @@ const createCarpool = async (carpoolData: unknown) => {
         validatedData.event_edit_code = nanoid(6); // 6 characters long
 
         // Create the carpool event
-        const newCarpool = await CarpoolService.createCarpool(validatedData as CarpoolData);
+        const newCarpool = await CarpoolService.createCarpool(validatedData);
         
         // Return the new carpool event data
         return newCarpool;

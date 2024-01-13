@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import joinController from '../../../controllers/joinController';
+import {JoinCarpoolRequest} from '../../../types/types';
 
 export async function POST(request: Request) {
     try {
-        const joinCarpoolData = await request.json();
+        const joinCarpoolData = await request.json() as JoinCarpoolRequest;
         const result = await joinController.joinCarpool(joinCarpoolData);
         return NextResponse.json(result, { status: 200 });
     } catch (error) {

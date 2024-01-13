@@ -13,12 +13,13 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
+    "noImplicitAny": false,
 
     /* Bundled projects */
     "lib": ["dom", "dom.iterable", "ES2022"],
     "noEmit": true,
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
     "incremental": true,
@@ -36,7 +37,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".next/types/**/*.ts"
-, "src/app/api/validateEvent."  ],
+    ".next/types/**/*.ts",
+  ],
   "exclude": ["node_modules"]
 }
