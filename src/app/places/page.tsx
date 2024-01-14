@@ -11,11 +11,10 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from 'react-places-autocomplete';
-import './App.css';
 
 import { useEffect, useState } from 'react';
 
-const googleMapsApiKey = 'AIzaSyBZdmJgO3NVSuKMDNRAnreRh5Hw8SnHotM';
+const googleMapsApiKey = 'AIzaSyCSFJh-vpLt12VKorCUhkbmSXfg16OLwxE';
 
 
 function Places() {
@@ -45,17 +44,17 @@ function Places() {
 
   const handleSelect = async value => {
     const results = await geocodeByAddress(value);
-
+    console.log(value)
     const ll = await getLatLng(results[0])
     console.log(ll)
     setAddress(value)
     setCoordinates(ll)
   }
 
+//      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSFJh-vpLt12VKorCUhkbmSXfg16OLwxE&libraries=places"></script>
 
   return (
     <div>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZdmJgO3NVSuKMDNRAnreRh5Hw8SnHotM&libraries=places"></script>
       {apiLoaded &&
         <PlacesAutocomplete
           value={address}
