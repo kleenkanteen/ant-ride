@@ -17,11 +17,9 @@ export function ParticipantDetails({ register, errors, onSubmit }) {
                     <div className="label">
                         <span className="label-text">Location: </span>
                     </div>
-
                      <Places >
-
                      </Places>
-                     
+                {/* check if I need to register the location and lat lon here*/}
             </label>
             <div className="form-control">
                 <label className="label cursor-pointer">

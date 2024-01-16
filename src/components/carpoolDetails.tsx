@@ -24,12 +24,10 @@ export function CarpoolDetails({ register, errors, onSubmit, control }) {
                     <div className="label">
                         <span className="label-text">Location: </span>
                     </div>
-
-                     <Places >
-
+                     <Places>
                      </Places>
-                     
-            </label>
+                     {/* check if I need to register the location and lat lon here*/}
+                </label>           
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text">Date: </span>
