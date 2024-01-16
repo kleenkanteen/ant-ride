@@ -50,9 +50,7 @@ function Places() {
     setAddress(value)
     setCoordinates(ll)
   }
-
 //      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSFJh-vpLt12VKorCUhkbmSXfg16OLwxE&libraries=places"></script>
-
   return (
     <div>
       {apiLoaded &&
@@ -67,25 +65,24 @@ function Places() {
             >
               <input
                 {...getInputProps({
-                  placeholder: 'Search Places ...',
-                  className: 'location-search-input',
+                  className: "input input-bordered w-full max-w-xs",
                 })}
               />
-              <div className="autocomplete-dropdown-container">
+              <div className="dropdown-content bg-base-200 top-14 max-h-96 overflow-auto flex-col rounded-md">
                 {loading && <div>Loading...</div>}
                 {suggestions.map((suggestion, index) => {
                   const className = suggestion.active
                     ? 'suggestion-item--active'
                     : 'suggestion-item';
                   // inline style for demonstration purpose
-                  const style = suggestion.active
+                 /* const style = suggestion.active
                     ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                    : { backgroundColor: '#ffffff', cursor: 'pointer' };*/
                   return (
                     <div key={index}
                       {...getSuggestionItemProps(suggestion, {
-                        className,
-                        style,
+                        className: "border-b border-b-base-content/10 w-full",
+                        //style,
                       })}
                     >
                       <span key={index}>{suggestion.description}</span>
