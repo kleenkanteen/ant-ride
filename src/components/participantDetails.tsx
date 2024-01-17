@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Places} from "@/components/Places";
 
-export function ParticipantDetails({ register, errors, onSubmit }) {
+export function ParticipantDetails({ register, errors, onSubmit, setValue }) {
     return (
         <div className="flex flex-col gap-4">
             <label className="form-control w-full max-w-xs">
@@ -17,8 +17,7 @@ export function ParticipantDetails({ register, errors, onSubmit }) {
                     <div className="label">
                         <span className="label-text">Location: </span>
                     </div>
-                     <Places >
-                     </Places>
+                    <Places register={register} setValue={setValue}></Places>
                 {/* check if I need to register the location and lat lon here*/}
             </label>
             <div className="form-control">

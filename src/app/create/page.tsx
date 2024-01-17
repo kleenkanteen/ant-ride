@@ -33,6 +33,7 @@ export default function Create() {
         register,
         control,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema),
@@ -52,7 +53,7 @@ export default function Create() {
         <ThemeProvider theme={darkTheme}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <CarpoolDetails register={register} errors={errors} control={control} onSubmit={onSubmit} />
+                    <CarpoolDetails register={register} errors={errors} control={control} onSubmit={onSubmit} setValue={setValue} />
                 </form>
             </LocalizationProvider>
         </ThemeProvider>

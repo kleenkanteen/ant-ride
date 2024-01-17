@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Controller } from 'react-hook-form';
 import {Places} from "@/components/Places";
 
-export function CarpoolDetails({ register, errors, onSubmit, control }) {
+export function CarpoolDetails({ register, errors, onSubmit, control, setValue }) {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="flex flex-col gap-4">
@@ -24,9 +24,8 @@ export function CarpoolDetails({ register, errors, onSubmit, control }) {
                     <div className="label">
                         <span className="label-text">Location: </span>
                     </div>
-                     <Places>
-                     </Places>
-                     {/* check if I need to register the location and lat lon here*/}
+                    <Places register={register} setValue={setValue}></Places>
+                    {/* check if I need to register the location and lat lon here*/}
                 </label>           
                 <label className="form-control w-full max-w-xs">
                     <div className="label">

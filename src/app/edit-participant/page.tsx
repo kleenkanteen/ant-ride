@@ -35,7 +35,7 @@ export default function Edit() {
         // router.push(`/data?code=${data.code}`);
     };
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         resolver: yupResolver<IParticipantDetails>(schema),
         defaultValues: {
             seats_available: 0,
@@ -71,7 +71,7 @@ export default function Edit() {
                         {...register("remove")} />
                 </label>
             </div>
-                <ParticipantDetails register={register} errors={errors} onSubmit={handleSubmit(onSubmit)} />
+                <ParticipantDetails register={register} errors={errors} onSubmit={handleSubmit(onSubmit)} setValue={setValue} />
             </div>
         </form>
     );

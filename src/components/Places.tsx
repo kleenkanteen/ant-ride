@@ -13,13 +13,9 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import { useEffect, useState } from 'react';
 
-export function Places() {
-  const [address, setAddress] = useState("")
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    long: null
-  })
-
+export function Places({ register, setValue }) {
+  const [address, setAddress] = useState("");
+  const [formatted_address, setFormattedAddress] = useState("");
   const [apiLoaded, setApiLoaded] = useState(false);
 
   useEffect(() => {
@@ -30,19 +26,23 @@ export function Places() {
     });
 
     loader.load().then(() => {
-      console.log('Google Maps JavaScript API has been loaded');
       setApiLoaded(true);
     });
   }, []);
 
+  useEffect(() => {
+    setValue("location", formatted_address);
+    console.log("changed: ", formatted_address);
+  }, [formatted_address])
+
   const handleSelect = async autocompleted_address => {
     const geocoded_address = await geocodeByAddress(autocompleted_address);
     const latlong = await getLatLng(geocoded_address[0]);
-    console.log(geocoded_address);
+    console.log(geocoded_address[0]);
     console.log(latlong);
-    console.log(`${autocompleted_address.formatted_address}|${autocompleted_address.lat}|${autocompleted_address.lng}`);
-    setAddress(`${autocompleted_address.formatted_address}|${autocompleted_address.lat}|${autocompleted_address.lng}`);
-    setCoordinates(latlong);
+    console.log(`${geocoded_address[0].formatted_address}|${latlong.lat}|${latlong.lng}`);
+    setFormattedAddress(`${geocoded_address[0].formatted_address}|${latlong.lat}|${latlong.lng}`);
+    setAddress(geocoded_address[0].formatted_address);
   }
   return (
     <div>
@@ -52,17 +52,16 @@ export function Places() {
           onChange={setAddress}
           onSelect={handleSelect}
         >
-          {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          {({ getInputProps, suggestions, getSuggestionItemProps }) => (
             <div
             >
               <input
                 {...getInputProps({
                   className: "input input-bordered w-full max-w-xs",
                 })}
-                max="70"
+                max="90"
               />
               <div className="dropdown-content bg-base-200 top-14 max-h-96 overflow-auto flex-col rounded-md">
-                {loading && <div>Loading...</div>}
                 {suggestions.map((suggestion, index) => {
                   const className = suggestion.active
                     ? 'suggestion-item--active'
