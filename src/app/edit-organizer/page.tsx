@@ -26,7 +26,7 @@ const schema = yup.object().shape({
     event_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
     edit_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
     event_name: yup.string().max(40).required(),
-    location: yup.string().max(40).required(),
+    location: yup.string().max(90).required(),
     date: yup.date().required(),
     time: yup.date().required(),
 });
@@ -42,7 +42,7 @@ export default function Edit() {
         //might use this instead if you want to change response based on both codes instead of just one
     };
 
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, setValue, formState: { errors } } = useForm({
         resolver: yupResolver<IEditDetails>(schema),
     });
 
@@ -68,7 +68,7 @@ export default function Edit() {
                         {errors.edit_code?.message && <br />}
                         <p className="text-red-500" >{errors.edit_code?.message}</p>
                     </label>
-                    <CarpoolDetails register={register} errors={errors} control={control} onSubmit={onSubmit} />
+                    <CarpoolDetails register={register} errors={errors} control={control} onSubmit={onSubmit} setValue={setValue} />
                 </div>
             </form>
         </ThemeProvider>

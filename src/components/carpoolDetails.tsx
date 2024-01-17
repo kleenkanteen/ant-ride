@@ -5,8 +5,9 @@ import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Controller } from 'react-hook-form';
+import {Places} from "@/components/Places";
 
-export function CarpoolDetails({ register, errors, onSubmit, control }) {
+export function CarpoolDetails({ register, errors, onSubmit, control, setValue }) {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="flex flex-col gap-4">
@@ -23,11 +24,9 @@ export function CarpoolDetails({ register, errors, onSubmit, control }) {
                     <div className="label">
                         <span className="label-text">Location: </span>
                     </div>
-                    <input type="text" max="40" className="input input-bordered w-full max-w-xs"
-                        {...register("location")} />
-                    {errors.location?.message && <br />}
-                    <p className="text-red-500">{errors.location?.message}</p>
-                </label>
+                    <Places register={register} setValue={setValue}></Places>
+                    {/* check if I need to register the location and lat lon here*/}
+                </label>           
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text">Date: </span>
@@ -73,3 +72,8 @@ export function CarpoolDetails({ register, errors, onSubmit, control }) {
         </LocalizationProvider>
     );
 };
+
+/*<input type="text" max="40" className="input input-bordered w-full max-w-xs"
+                        {...register("location")} />
+                    {errors.location?.message && <br />}
+                    <p className="text-red-500">{errors.location?.message}</p>*/

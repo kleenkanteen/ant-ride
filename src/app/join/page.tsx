@@ -7,11 +7,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ParticipantDetails } from '@/components/participantDetails';
 
 interface IParticipantDetails {
-    event_code: string
+    event_code: string,
+    name: string,
+    location: string,
+    can_pickup: boolean,
+    seats_available: number,
 }
 
 const schema = yup.object().shape({
     event_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Invalid character(s) entered").required(),
+    name: yup.string().max(40).required(),
+    location: yup.string().max(70).required(),
+    can_pickup: yup.boolean().required(),
+    seats_available: yup.number().max(20).required()
 });
 
 export default function Join() {
@@ -22,7 +30,7 @@ export default function Join() {
         // router.push(`/data?code=${data.code}`);
     };
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         resolver: yupResolver<IParticipantDetails>(schema)
     });
 
@@ -38,7 +46,7 @@ export default function Join() {
                         {errors.event_code?.message && <br />}
                         <p className="text-red-500">{errors.event_code?.message}</p>
                     </label>
-                    <ParticipantDetails register={register} errors={errors} onSubmit={handleSubmit(onSubmit)} />
+                    <ParticipantDetails register={register} errors={errors} onSubmit={handleSubmit(onSubmit)} setValue={setValue} />
                 </div>
             </form>
     );
