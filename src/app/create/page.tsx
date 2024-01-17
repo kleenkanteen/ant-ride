@@ -17,7 +17,7 @@ interface IFormInputs {
 
 const schema = yup.object().shape({
     event_name: yup.string().max(40).required(),
-    location: yup.string().max(40).required(),
+    location: yup.string().max(70).required(),
     date: yup.date().required(),
     time: yup.date().required(),
 });

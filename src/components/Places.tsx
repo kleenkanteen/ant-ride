@@ -11,15 +11,9 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from 'react-places-autocomplete';
-
 import { useEffect, useState } from 'react';
 
-const googleMapsApiKey = 'AIzaSyCSFJh-vpLt12VKorCUhkbmSXfg16OLwxE';
-
-
-function Places() {
-
-
+export function Places() {
   const [address, setAddress] = useState("")
   const [coordinates, setCoordinates] = useState({
     lat: null,
@@ -28,10 +22,9 @@ function Places() {
 
   const [apiLoaded, setApiLoaded] = useState(false);
 
-
   useEffect(() => {
     const loader = new Loader({
-      apiKey: googleMapsApiKey,
+      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!,
       version: "weekly",
       libraries: ['places'],
     });
@@ -42,15 +35,15 @@ function Places() {
     });
   }, []);
 
-  const handleSelect = async value => {
-    const results = await geocodeByAddress(value);
-    console.log(value)
-    const ll = await getLatLng(results[0])
-    console.log(ll)
-    setAddress(value)
-    setCoordinates(ll)
+  const handleSelect = async autocompleted_address => {
+    const geocoded_address = await geocodeByAddress(autocompleted_address);
+    const latlong = await getLatLng(geocoded_address[0]);
+    console.log(geocoded_address);
+    console.log(latlong);
+    console.log(`${autocompleted_address.formatted_address}|${autocompleted_address.lat}|${autocompleted_address.lng}`);
+    setAddress(`${autocompleted_address.formatted_address}|${autocompleted_address.lat}|${autocompleted_address.lng}`);
+    setCoordinates(latlong);
   }
-//      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSFJh-vpLt12VKorCUhkbmSXfg16OLwxE&libraries=places"></script>
   return (
     <div>
       {apiLoaded &&
@@ -61,12 +54,12 @@ function Places() {
         >
           {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
             <div
-
             >
               <input
                 {...getInputProps({
                   className: "input input-bordered w-full max-w-xs",
                 })}
+                max="70"
               />
               <div className="dropdown-content bg-base-200 top-14 max-h-96 overflow-auto flex-col rounded-md">
                 {loading && <div>Loading...</div>}
@@ -77,8 +70,8 @@ function Places() {
                   return (
                     <div key={index}
                       {...getSuggestionItemProps(suggestion, {
-                        className: "border-b border-b-base-content/10 w-full",
-                        //style,
+                        className: "border-b border-b-base-content/10 p-4 text-base w-full",
+                        /* border-b border-b-base-content/10*/
                       })}
                     >
                       <span key={index}>{suggestion.description}</span>
@@ -90,10 +83,6 @@ function Places() {
           )}
         </PlacesAutocomplete>
       }
-
     </div>
   );
-
 }
-
-export default Places;

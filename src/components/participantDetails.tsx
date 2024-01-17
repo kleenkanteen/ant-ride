@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import Places from "@/components/Autocomplete";
+import {Places} from "@/components/Places";
 
 export function ParticipantDetails({ register, errors, onSubmit }) {
     return (

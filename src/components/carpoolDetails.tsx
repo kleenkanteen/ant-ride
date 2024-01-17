@@ -5,7 +5,7 @@ import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Controller } from 'react-hook-form';
-import Places from "@/components/Autocomplete";
+import {Places} from "@/components/Places";
 
 export function CarpoolDetails({ register, errors, onSubmit, control }) {
     return (

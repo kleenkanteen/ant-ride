@@ -26,7 +26,7 @@ const schema = yup.object().shape({
     event_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
     edit_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers").required(),
     event_name: yup.string().max(40).required(),
-    location: yup.string().max(40).required(),
+    location: yup.string().max(70).required(),
     date: yup.date().required(),
     time: yup.date().required(),
 });
