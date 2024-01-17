@@ -69,8 +69,7 @@ export function Places({ register, setValue }) {
                   return (
                     <div key={index}
                       {...getSuggestionItemProps(suggestion, {
-                        className: "border-b border-b-base-content/10 p-4 text-base w-full",
-                        /* border-b border-b-base-content/10*/
+                        className: "border-2 border-gray-600 border-solid p-4 text-base w-full hover:bg-gray-700",
                       })}
                     >
                       <span key={index}>{suggestion.description}</span>
