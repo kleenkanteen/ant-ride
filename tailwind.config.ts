@@ -2,6 +2,9 @@ import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
+  daisyui: {
+    themes: ["dark"],
+  },
   content: ["./src/**/*.tsx"],
   theme: {
     extend: {
@@ -10,5 +13,5 @@ export default {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require('@tailwindcss/typography'), require("daisyui")],
 } satisfies Config;

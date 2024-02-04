@@ -6,7 +6,7 @@ export default function HomePage() {
       <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] my-4 mx-2 text-center">
         The
         {' '}
-        <span className="bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <span className="bg-gradient-to-r from-indigo-700 via-blue-500 to-green-600 inline-block text-transparent bg-clip-text">
           easiest
         </span>
         {' '}
