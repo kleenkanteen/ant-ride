@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  display: 'swap',
 });
 
 export const metadata = {
@@ -19,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+    <html lang="en" className={inter.className}>
+      <body>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gray-800">
         <div className="flex flex-col gap-4">
           <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] mb-4">
