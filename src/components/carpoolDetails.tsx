@@ -21,12 +21,12 @@ export function CarpoolDetails({ register, errors, onSubmit, control }) {
                 </label>
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
-                        <span className="label-text">Location: </span>
+                        <span className="label-text">Address: </span>
                     </div>
                     <input type="text" max="40" className="input input-bordered w-full max-w-xs"
-                        {...register("location")} />
-                    {errors.location?.message && <br />}
-                    <p className="text-red-500">{errors.location?.message}</p>
+                        {...register("address")} />
+                    {errors.address?.message && <br />}
+                    <p className="text-red-500">{errors.address?.message}</p>
                 </label>
                 <label className="form-control w-full max-w-xs">
                     <div className="label">

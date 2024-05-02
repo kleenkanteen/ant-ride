@@ -22,26 +22,26 @@ export function ParticipantDetails({ register, errors, onSubmit }) {
                 <div className="form-control">
                     <label className="label cursor-pointer">
                         <span className="label-text">Male</span>
-                        <input type="radio" name="radio-10" className="radio checked:bg-blue-400"
+                        <input type="radio" value="Male" className="radio checked:bg-blue-400"
                         {...register("gender")}/>
                     </label>
                 </div>
                 <div className="form-control">
                     <label className="label cursor-pointer">
                         <span className="label-text">Female</span>
-                        <input type="radio" name="radio-10" className="radio checked:bg-rose-300"
+                        <input type="radio" value="Female" className="radio checked:bg-rose-300"
                         {...register("gender")}/>
                     </label>
                 </div>
             </div>
             <label className="form-control w-full max-w-xs">
                 <div className="label">
-                    <span className="label-text">Location: </span>
+                    <span className="label-text">Address: </span>
                 </div>
                 <input type="text" placeholder="" className="input input-bordered w-full max-w-xs"
-                    {...register("location")} />
-                {errors.location?.message && <br />}
-                <p className="text-red-500">{errors.location?.message}</p>
+                    {...register("address")} />
+                {errors.address?.message && <br />}
+                <p className="text-red-500">{errors.address?.message}</p>
             </label>
             <div className="form-control">
                 <label className="label cursor-pointer">
