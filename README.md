@@ -14,6 +14,8 @@ messaging people back and forth, finding out how far they lived near each other.
 
 Team of 3. I (Sabih) had the idea and invited my 2 teammates. I'm fighting climate change one line at a time.
 
+Project Trello board: [https://trello.com/b/PWEmEDrP/ant-ride](https://trello.com/b/PWEmEDrP/ant-ride)
+
 ## Tech stack
 - Typescript
 - Next.js for frontend
