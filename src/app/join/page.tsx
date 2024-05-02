@@ -1,18 +1,11 @@
 "use client"
 
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import { useRouter } from 'next/navigation';
 import { ParticipantDetails } from '@/components/participantDetails';
-
-interface IParticipantDetails {
-    event_code: string
-}
-
-const schema = yup.object().shape({
-    event_code: yup.string().min(6).max(6).matches(/^[a-zA-Z0-9]+$/, "Invalid character(s) entered").required(),
-});
+import type { IParticipantDetails } from "../schemas/participants";
+import { schema } from "../schemas/participants";
 
 export default function Join() {
 
@@ -23,7 +16,12 @@ export default function Join() {
     };
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver<IParticipantDetails>(schema)
+        resolver: yupResolver<IParticipantDetails>(schema),
+        defaultValues: {
+            seats_available: 0,
+            remove: false,
+            edit_code: "aaaaaa"
+        }
     });
 
     return (
