@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/react"
 
 import { Inter } from "next/font/google";
 
@@ -27,6 +28,7 @@ export default function RootLayout({
             ant ride
           </h1>
           {children}
+          <Analytics />
         </div>      
       </main>
       </body>
