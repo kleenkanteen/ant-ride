@@ -21,10 +21,12 @@ export function ParticipantDetails({ register, errors, disabled }) {
           <span className="label-text">Phone: </span>
         </div>
         <input
-          type="text"
-          placeholder="+1 101 756 6789"
+          type="tel"
           className="input input-bordered w-full max-w-xs"
-          {...register("phone_num")}
+          {...register("phone_num", {
+            required: true,
+            pattern: /[0-9]{3}-[0-9]{3}-[0-9]{4}/,
+          })}
         />
         {errors.name?.message && <br />}
         <p className="text-red-500">{errors.name?.message}</p>

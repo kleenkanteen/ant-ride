@@ -7,15 +7,19 @@ import { ParticipantDetails } from "@/components/participantDetails";
 import type { IParticipantDetails } from "../schemas/participants";
 import { schema } from "../schemas/participants";
 import { toast } from "sonner";
-import { editParticipant } from "../actions";
+import ky from "ky";
 
 export default function Edit() {
   // const router = useRouter();
 
   const onSubmit = async (data) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const res = await editParticipant(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const res: any = await ky
+        .put(`${process.env.NEXT_PUBLIC_SERVER_URL}/participant`, {
+          json: data,
+        })
+        .json();
       res.status == "success"
         ? toast.success(res.message)
         : toast.error(res.message);

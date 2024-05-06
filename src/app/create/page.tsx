@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -8,10 +8,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { CarpoolDetails } from "@/components/carpoolDetails";
-import { createEvent } from "../actions";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
-import copy from "copy-text-to-clipboard";
+import ky, { type HTTPError } from "ky";
+import { copyContent } from "@/lib/utils";
 
 interface IFormInputs {
   event_name: string;
@@ -61,14 +61,18 @@ export default function Create() {
         time.getMinutes(),
         time.getSeconds(),
       );
-      const res = await createEvent({
-        name: data.event_name,
-        address: data.address,
-        date_time: new Date(date_time).toISOString(),
-      });
+      const res: any = await ky
+        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/event`, {
+          json: {
+            name: data.event_name as string,
+            address: data.address as string,
+            date_time: new Date(date_time).toISOString(),
+          },
+        })
+        .json();
+
       if (res.status === "success") {
         toast.success(res.message);
-        console.log(res.data[0]);
         setEvent(res.data[0].event_code);
         setEdit(res.data[0].edit_code);
         if (dialog?.current) {
@@ -79,8 +83,13 @@ export default function Create() {
         toast.error(res.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("An error occurred");
+      if ((error as Error).name === "HTTPError") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const err: any = await (error as HTTPError).response.json();
+        toast.error(err?.message);
+      } else {
+        toast.error("An error occurred");
+      }
     }
   };
   const onInvalid = (errors) => console.error(errors);
@@ -103,8 +112,8 @@ export default function Create() {
         >
           <div className="modal-box my-4">
             <h3 className="text-lg font-bold">
-              Save the event code and edit in case you want to change your
-              details later!
+              Screenshot or copy these codes in case you want to edit your event
+              details in the future!
             </h3>
             <div className="mt-2">
               <div className="my-2 flex items-center gap-4">
@@ -114,10 +123,7 @@ export default function Create() {
 
                 <button
                   className="btn btn-xs"
-                  onClick={() => {
-                    copy(event);
-                    toast.success("Code copied!");
-                  }}
+                  onClick={() => copyContent(event)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -142,14 +148,7 @@ export default function Create() {
                 </span>
                 <button
                   className="btn btn-xs"
-                  onClick={() => {
-                    try {
-                      copy(edit);
-                      toast.success("Code copied!");
-                    } catch (error) {
-                      toast.error("Error copying code");
-                    }
-                  }}
+                  onClick={() => copyContent(edit)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

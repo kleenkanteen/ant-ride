@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -6,10 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ParticipantDetails } from "@/components/participantDetails";
 import type { IParticipantDetails } from "../schemas/participants";
 import { schema } from "../schemas/participants";
-import { join } from "../actions";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
-import copy from "copy-text-to-clipboard";
+import ky, { type HTTPError } from "ky";
+import { copyContent } from "@/lib/utils";
 
 export default function Join() {
   // const router = useRouter();
@@ -17,8 +18,11 @@ export default function Join() {
   const [edit, setEdit] = useState("");
   const onSubmit = async (data) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const res = await join(data);
+      const res: any = await ky
+        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/participant`, {
+          json: data,
+        })
+        .json();
       if (res.status == "success") {
         toast.success(res.message);
         setEdit(res.data[0].edit_code);
@@ -30,7 +34,13 @@ export default function Join() {
       }
       console.log("data", res.data);
     } catch (error) {
-      toast.error("An error occurred");
+      if ((error as Error).name === "HTTPError") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const err: any = await (error as HTTPError).response.json();
+        toast.error(err?.message);
+      } else {
+        toast.error("An error occurred");
+      }
     }
     // router.push(`/data?code=${data.code}`);
   };
@@ -78,27 +88,15 @@ export default function Join() {
       >
         <div className="modal-box my-4">
           <h3 className="text-lg font-bold">
-            Save the edit code in case you want to change your details later! 24
-            hours before the event, you will get a text message confirming if
-            you were matched into a ride and who will be your driver. Or your
-            riders if you are a driver
+            Save the edit code in case you want to change your personal details
+            or remove yourself in the future.
           </h3>
           <div className="mt-2">
-            <div className="my-2 flex w-full items-center gap-4">
+            <div className="my-68flex w-full items-center gap-4 text-center">
               <span className="w-[150px]">
                 Edit code: <strong>{edit}</strong>
               </span>
-              <button
-                className="btn btn-xs"
-                onClick={() => {
-                  try {
-                    copy(edit);
-                    toast.success("Code copied!");
-                  } catch (error) {
-                    toast.error("Error copying code");
-                  }
-                }}
-              >
+              <button className="btn btn-xs" onClick={() => copyContent(edit)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -116,6 +114,11 @@ export default function Join() {
                 </svg>
               </button>
             </div>
+            <p>
+              PS: 24 hours before the event, you will get a text message
+              confirming if you were matched into a ride and who will be your
+              driver. Or your riders if you are a driver.
+            </p>
           </div>
           <div className="modal-action">
             <form method="dialog">
