@@ -32,6 +32,8 @@ export default function Edit() {
   const {
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { isLoading, isSubmitting, errors },
   } = useForm({
     resolver: yupResolver<IParticipantDetails>(schema),
@@ -82,6 +84,8 @@ export default function Edit() {
           register={register}
           errors={errors}
           disabled={isLoading || isSubmitting}
+          getValues={getValues}
+          setValue={setValue}
         />
       </div>
     </form>

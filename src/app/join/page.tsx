@@ -48,6 +48,8 @@ export default function Join() {
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { isLoading, isSubmitting, errors },
   } = useForm({
     resolver: yupResolver<IParticipantDetails>(schema),
@@ -78,6 +80,8 @@ export default function Join() {
             register={register}
             errors={errors}
             disabled={isSubmitting || isLoading}
+            setValue={setValue}
+            getValues={getValues}
           />
         </div>
       </form>

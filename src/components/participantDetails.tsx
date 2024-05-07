@@ -1,6 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export function ParticipantDetails({ register, errors, disabled }) {
+import PhoneInput from "./phoneInput";
+
+export function ParticipantDetails({
+  register,
+  errors,
+  disabled,
+  setValue,
+  getValues,
+}) {
   return (
     <div className="flex flex-col gap-4">
       <label className="form-control w-full max-w-xs">
@@ -20,15 +28,12 @@ export function ParticipantDetails({ register, errors, disabled }) {
         <div className="label">
           <span className="label-text">Phone: </span>
         </div>
-        <input
-          type="tel"
-          className="input input-bordered w-full max-w-xs"
-          {...register("phone_num", {
-            required: true,
-            pattern: /[0-9]{3}-[0-9]{3}-[0-9]{4}/,
-          })}
+        <PhoneInput
+          value={getValues("phone_num") || ""}
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          onChange={(val: string) => setValue("phone_num", val)}
         />
-        {errors.name?.message && <br />}
+        {errors.phone_num?.message && <br />}
         <p className="text-red-500">{errors.name?.message}</p>
       </label>
       <div>
