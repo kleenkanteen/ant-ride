@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import PhoneInput from "./phoneInput";
+import { AddressAutocomplete } from "./addressAutocomplete";
 
 export function ParticipantDetails({
   register,
@@ -63,16 +64,12 @@ export function ParticipantDetails({
           </label>
         </div>
       </div>
+
       <label className="form-control w-full max-w-xs">
         <div className="label">
           <span className="label-text">Address: </span>
         </div>
-        <input
-          type="text"
-          placeholder=""
-          className="input input-bordered w-full max-w-xs"
-          {...register("address")}
-        />
+        <AddressAutocomplete setValue={setValue} />
         {errors.address?.message && <br />}
         <p className="text-red-500">{errors.address?.message}</p>
       </label>

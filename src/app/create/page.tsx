@@ -40,6 +40,7 @@ export default function Create() {
   const {
     register,
     control,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputs>({
@@ -102,6 +103,7 @@ export default function Create() {
             register={register}
             errors={errors}
             control={control}
+            setValue={setValue}
             // onSubmit={onSubmit}
           />
         </form>
