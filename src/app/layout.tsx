@@ -1,11 +1,12 @@
 import "@/styles/globals.css";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
 import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
-  display: 'swap',
+  display: "swap",
 });
 
 export const metadata = {
@@ -22,15 +23,27 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gray-800">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] mb-4">
-            ant ride
-          </h1>
-          {children}
-          <Analytics />
-        </div>      
-      </main>
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gray-800">
+          <div className="flex flex-col gap-4">
+            <h1 className="mb-4 text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+              ant ride
+            </h1>
+            {children}
+            <Toaster
+              toastOptions={{
+                unstyled: true,
+                classNames: {
+                  toast: "alert",
+                  error: "alert-error",
+                  success: "alert-success",
+                  warning: "alert-warning",
+                  info: "alert-info",
+                },
+              }}
+            />
+            <Analytics />
+          </div>
+        </main>
       </body>
     </html>
   );
