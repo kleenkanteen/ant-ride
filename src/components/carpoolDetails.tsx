@@ -5,8 +5,9 @@ import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Controller } from "react-hook-form";
+import { AddressAutocomplete } from "./addressAutocomplete";
 
-export function CarpoolDetails({ register, errors, control }) {
+export function CarpoolDetails({ register, setValue, errors, control }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="flex flex-col gap-4">
@@ -27,12 +28,7 @@ export function CarpoolDetails({ register, errors, control }) {
           <div className="label">
             <span className="label-text">Address: </span>
           </div>
-          <input
-            type="text"
-            max="40"
-            className="input input-bordered w-full max-w-xs"
-            {...register("address")}
-          />
+          <AddressAutocomplete setValue={setValue} />
           {errors.address?.message && <br />}
           <p className="text-red-500">{errors.address?.message}</p>
         </label>

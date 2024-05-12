@@ -87,6 +87,7 @@ export default function Edit() {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver<IEditDetails>(schema),
@@ -124,6 +125,7 @@ export default function Edit() {
             register={register}
             errors={errors}
             control={control}
+            setValue={setValue}
             // onSubmit={onSubmit}
           />
         </div>
