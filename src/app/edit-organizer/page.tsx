@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import { useRouter } from 'next/navigation';
 import { CarpoolDetails } from "@/components/carpoolDetails";
-import ky from "ky";
+import ky, { type HTTPError } from "ky";
 import { toast } from "sonner";
 
 const darkTheme = createTheme({
@@ -18,27 +18,17 @@ const darkTheme = createTheme({
 interface IEditDetails {
   event_code: string;
   edit_code: string;
-  event_name: string;
-  location: string;
+  name: string;
+  address: string;
   date: Date;
   time: Date;
 }
 
 const schema = yup.object().shape({
-  event_code: yup
-    .string()
-    .min(6)
-    .max(6)
-    .matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers")
-    .required(),
-  edit_code: yup
-    .string()
-    .min(6)
-    .max(6)
-    .matches(/^[a-zA-Z0-9]+$/, "Code must be only letters or numbers")
-    .required(),
-  event_name: yup.string().max(40).required(),
-  location: yup.string().max(40).required(),
+  event_code: yup.string().min(5).max(5).required(),
+  edit_code: yup.string().min(5).max(5).required(),
+  name: yup.string().max(40).required(),
+  address: yup.string().max(100).required(),
   date: yup.date().required(),
   time: yup.date().required(),
 });
@@ -47,7 +37,6 @@ export default function Edit() {
   // const router = useRouter();
 
   const onSubmit = async (data) => {
-    console.log(data);
     // router.push(`/data?code=${data.edit_code}`);
     //router.push(`/data?join_code=${data.join_code}&edit_code=${data.edit_code}`);
     //might use this instead if you want to change response based on both codes instead of just one
@@ -74,12 +63,16 @@ export default function Edit() {
       if (res.status === "success") {
         toast.success(res.message);
       } else {
-        console.log("error", res);
         toast.error(res.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("An error occurred");
+      if ((error as Error).name === "HTTPError") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+        const err: any = await (error as HTTPError).response.json();
+        toast.error(err?.message);
+      } else {
+        toast.error("An error occurred");
+      }
     }
   };
 

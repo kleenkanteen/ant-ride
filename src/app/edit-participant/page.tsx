@@ -7,7 +7,7 @@ import { ParticipantDetails } from "@/components/participantDetails";
 import type { IParticipantDetails } from "../schemas/participants";
 import { schema } from "../schemas/participants";
 import { toast } from "sonner";
-import ky from "ky";
+import ky, { type HTTPError } from "ky";
 
 export default function Edit() {
   // const router = useRouter();
@@ -24,7 +24,13 @@ export default function Edit() {
         ? toast.success(res.message)
         : toast.error(res.message);
     } catch (error) {
-      toast.error("An error occurred");
+      if ((error as Error).name === "HTTPError") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+        const err: any = await (error as HTTPError).response.json();
+        toast.error(err?.message);
+      } else {
+        toast.error("An error occurred");
+      }
     }
     // router.push(`/data?code=${data.code}`);
   };

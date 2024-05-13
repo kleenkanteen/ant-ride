@@ -16,13 +16,13 @@ export default function PhoneInput({ value, onChange }) {
 
   return (
     <div className="flex items-center gap-2">
-      <input
+      {/* <input
         ref={ref1}
         type="text"
         disabled
         value={"+1"}
         className="input input-bordered w-[50px]"
-      />
+      /> */}
       <input
         ref={ref1}
         type="text"

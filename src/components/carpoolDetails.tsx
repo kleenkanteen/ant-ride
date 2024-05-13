@@ -19,7 +19,7 @@ export function CarpoolDetails({ register, setValue, errors, control }) {
             type="text"
             max="40"
             className="input input-bordered w-full max-w-xs"
-            {...register("event_name")}
+            {...register("name")}
           />
           {errors.event_name?.message && <br />}
           <p className="text-red-500">{errors.event_name?.message}</p>
