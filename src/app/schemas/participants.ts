@@ -7,7 +7,7 @@ export const schema = yup.object().shape({
   name: yup.string().max(40).required(),
   phone_num: yup.string().max(10).required(),
   gender: yup.string().required(),
-  address: yup.string().max(40).required(),
+  address: yup.string().max(100).required(),
   can_pickup: yup.boolean().required(),
   seats_available: yup.number().max(20).required(),
 });
