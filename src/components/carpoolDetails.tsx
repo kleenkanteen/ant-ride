@@ -21,8 +21,8 @@ export function CarpoolDetails({ register, setValue, errors, control }) {
             className="input input-bordered w-full max-w-xs"
             {...register("name")}
           />
-          {errors.event_name?.message && <br />}
-          <p className="text-red-500">{errors.event_name?.message}</p>
+          {errors.name?.message && <br />}
+          <p className="text-red-500">{errors.name?.message}</p>
         </label>
         <label className="form-control w-full max-w-xs">
           <div className="label">

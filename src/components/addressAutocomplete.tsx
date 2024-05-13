@@ -57,7 +57,6 @@ export function AddressAutocomplete({ setValue }) {
                   className: "input input-bordered w-full max-w-xs",
                 })}
                 max="90"
-                onBlur={() => console.log("Input lost focus")} // Add this line
               />
               <div className="dropdown-content top-14 max-h-96 flex-col overflow-auto rounded-md bg-base-200">
                 {suggestions.map((suggestion, index) => {
@@ -66,7 +65,7 @@ export function AddressAutocomplete({ setValue }) {
                     : "suggestion-item";
                   return (
                     <div
-                      key={`${suggestion.placeId}-${index}`}
+                      key={`${index}`}
                       {...getSuggestionItemProps(suggestion, {
                         className:
                           "border-b cursor-pointer border-b-base-content/10 p-4 text-base w-full",

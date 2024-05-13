@@ -58,7 +58,10 @@ export default function Join() {
       edit_code: "aaaaa",
     },
   });
+
   const onInvalid = (errors) => console.error(errors);
+  const eventCode = getValues("event_code");
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
@@ -86,14 +89,14 @@ export default function Join() {
       </form>
       <Dialog
         ref={dialog}
-        title="Save the edit code in case you want to change your personal details
-            or remove yourself in the future."
+        title="Save these 2 codes in case you want to change your details
+            or remove yourself later:"
       >
+        <CopyElement label="Event code" code={eventCode} />
         <CopyElement label="Edit code" code={edit} />
         <p>
-          PS: 24 hours before the event, you will get a text message confirming
-          if you were matched into a ride and who will be your driver. Or your
-          riders if you are a driver.
+          If you were matched into a ride, you will get a text message 24 hours before the event starts asking you to confirm your seat. Likewise 
+          if you are a driver, but for your route.
         </p>
       </Dialog>
     </>
