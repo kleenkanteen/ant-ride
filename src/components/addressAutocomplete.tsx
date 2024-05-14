@@ -32,17 +32,11 @@ export function AddressAutocomplete({ setValue }) {
 
   useEffect(() => {
     setValue("address", formatted_address);
-    console.log("changed: ", formatted_address);
   }, [formatted_address]);
 
   const handleSelect = async (autocompleted_address) => {
     const geocoded_address = await geocodeByAddress(autocompleted_address);
     const latlong = await getLatLng(geocoded_address[0]);
-    console.log(geocoded_address[0]);
-    console.log(latlong);
-    console.log(
-      `${geocoded_address[0].formatted_address}|${latlong.lat}|${latlong.lng}`,
-    );
     setFormattedAddress(
       `${geocoded_address[0].formatted_address}|${latlong.lat}|${latlong.lng}`,
     );
@@ -52,11 +46,6 @@ export function AddressAutocomplete({ setValue }) {
     <div>
       {apiLoaded ? (
         <PlacesAutocomplete
-          // searchOptions={{
-          //   componentRestrictions: { country: ["us", "cn"] },
-          //   types: ["address"],
-          //   fields: ["formatted_address", "geometry.location"],
-          // }}
           value={address}
           onChange={setAddress}
           onSelect={handleSelect}
@@ -76,14 +65,12 @@ export function AddressAutocomplete({ setValue }) {
                     : "suggestion-item";
                   return (
                     <div
-                      key={suggestion.placeId}
+                      key={`${index}`}
                       {...getSuggestionItemProps(suggestion, {
                         className:
-                          "border-b border-b-base-content/10 p-4 text-base w-full",
-                        /* border-b border-b-base-content/10*/
+                          "border-b cursor-pointer border-b-base-content/10 p-4 text-base w-full",
                       })}
                     >
-                      {console.log(suggestion)}
                       <span key={index}>{suggestion.description}</span>
                     </div>
                   );

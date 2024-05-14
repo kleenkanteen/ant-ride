@@ -19,13 +19,6 @@ export default function PhoneInput({ value, onChange }) {
       <input
         ref={ref1}
         type="text"
-        disabled
-        value={"+1"}
-        className="input input-bordered w-[50px]"
-      />
-      <input
-        ref={ref1}
-        type="text"
         value={phone[0]}
         maxLength={3}
         onChange={(e) => {
