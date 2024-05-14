@@ -24,11 +24,13 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
       <body>
         <main className="flex min-h-screen flex-col items-center justify-center bg-gray-800">
-          <div className="flex flex-col gap-4">
-            <h1 className="mb-4 text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+          <div className="flex flex-col items-center gap-12">
+            <h1 className="underline decoration-wavy decoration-blue-700 underline-offset-8 mb-4 text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
               ant ride
             </h1>
             {children}
+            <span className="font-bold text-white text-lg">Under construction</span>
+            <span><a target="_blank" href="https://github.com/kleenkanteen/ant-ride">Made with ❤️ by Sabih & co.</a></span>
             <Toaster
               toastOptions={{
                 unstyled: true,
