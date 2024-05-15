@@ -119,7 +119,6 @@ export default function Edit() {
             errors={errors}
             control={control}
             setValue={setValue}
-            // onSubmit={onSubmit}
           />
         </div>
       </form>

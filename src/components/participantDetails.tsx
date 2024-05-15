@@ -35,7 +35,7 @@ export function ParticipantDetails({
           onChange={(val: string) => setValue("phone_num", val)}
         />
         {errors.phone_num?.message && <br />}
-        <p className="text-red-500">{errors.name?.message}</p>
+        <p className="text-red-500">{errors.phone_num?.message}</p>
       </label>
       <div>
         <span className="label-text font-bold">Gender: </span>
@@ -63,6 +63,8 @@ export function ParticipantDetails({
             />
           </label>
         </div>
+        {errors.gender?.message && <br />}
+        <p className="text-red-500">{errors.gender?.message}</p>
       </div>
 
       <label className="form-control w-full max-w-xs">
@@ -97,7 +99,6 @@ export function ParticipantDetails({
         <p className="text-red-500">{errors.seats_available?.message}</p>
       </label>
       <button
-        // onClick={onSubmit}
         disabled={disabled}
         type="submit"
         className="btn btn-outline btn-md my-4"

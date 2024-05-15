@@ -3,7 +3,6 @@
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useRouter } from 'next/navigation';
 import { ParticipantDetails } from "@/components/participantDetails";
 import type { IParticipantDetails } from "../schemas/participants";
 import { schema } from "../schemas/participants";
@@ -13,7 +12,6 @@ import ky, { type HTTPError } from "ky";
 import Dialog, { CopyElement } from "@/components/dialog";
 
 export default function Join() {
-  // const router = useRouter();
   const dialog = useRef(null);
   const [edit, setEdit] = useState("");
   const onSubmit = async (data) => {
@@ -41,7 +39,6 @@ export default function Join() {
         toast.error("An error occurred");
       }
     }
-    // router.push(`/data?code=${data.code}`);
   };
 
   const {
