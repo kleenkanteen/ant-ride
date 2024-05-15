@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useRouter } from 'next/navigation';
 import { ParticipantDetails } from "@/components/participantDetails";
 import type { IParticipantDetails } from "../schemas/participants";
 import { schema } from "../schemas/participants";
@@ -10,8 +9,6 @@ import { toast } from "sonner";
 import ky, { type HTTPError } from "ky";
 
 export default function Edit() {
-  // const router = useRouter();
-
   const onSubmit = async (data) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +29,6 @@ export default function Edit() {
         toast.error("An error occurred");
       }
     }
-    // router.push(`/data?code=${data.code}`);
   };
 
   const {
