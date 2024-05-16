@@ -16,7 +16,6 @@ import { toast } from "sonner";
 import Dialog, { CopyElement } from "@/components/dialog";
 
 export default function Join() {
-  // const router = useRouter();
   const dialog = useRef(null);
   const [edit, setEdit] = useState("");
 
@@ -48,7 +47,6 @@ export default function Join() {
         toast.error("An error occurred");
       }
     }
-    // router.push(`/data?code=${data.code}`);
   };
 
   const {
