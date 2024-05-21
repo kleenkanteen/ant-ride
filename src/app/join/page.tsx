@@ -19,8 +19,8 @@ export default function Join() {
   const dialog = useRef(null);
   const [edit, setEdit] = useState("");
 
-  const searchParams = useSearchParams()
-  const editCode = searchParams.get('event-code')
+  const search_params = useSearchParams()
+  const event_code_param = search_params.get('event-code')
 
   const onSubmit = async (data) => {
     try {
@@ -65,8 +65,8 @@ export default function Join() {
   });
 
   useEffect(() => {
-    if (editCode) {
-      setValue("event_code", editCode);
+    if (event_code_param) {
+      setValue("event_code", event_code_param);
     }
   }, []);
 
