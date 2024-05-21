@@ -10,7 +10,7 @@ const ConfirmPage: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleConfirmation = async (confirmed: boolean) => {
+  const handleDecision = async (data) => {
     setLoading(true);
     try {
       const res: any = await ky
@@ -18,12 +18,12 @@ const ConfirmPage: React.FC = () => {
           json: {
             edit_code: params.get("edit_code"),
             event_code: params.get("event_code"),
-            confirmed,
+            ...data,
           },
         })
         .json();
       if (res.status == "success") {
-        router.push(`/confirm/success`);
+        router.push(`/confirm/success${data.remove ? "?remove=true" : ""}`);
       } else {
         toast.error(res.message);
       }
@@ -49,14 +49,14 @@ const ConfirmPage: React.FC = () => {
       <div className="flex items-center justify-center gap-8">
         <button
           className="btn btn-outline"
-          onClick={() => handleConfirmation(false)}
+          onClick={() => handleDecision({ remove: true })}
           disabled={loading}
         >
           No, I'm not going
         </button>
         <button
           className="btn btn-primary"
-          onClick={() => handleConfirmation(true)}
+          onClick={() => handleDecision({ confirmed: true })}
           disabled={loading}
         >
           Yes. I'm going!
