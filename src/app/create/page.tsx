@@ -4,13 +4,16 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { CarpoolDetails } from "@/components/carpoolDetails";
-import { toast } from "sonner";
+
 import { useRef, useState } from "react";
 import ky, { type HTTPError } from "ky";
+
+import { toast } from "sonner";
 import Dialog, { CopyElement } from "@/components/dialog";
 
 interface IFormInputs {
@@ -37,6 +40,7 @@ export default function Create() {
   const dialog = useRef(null);
   const [event, setEvent] = useState("");
   const [edit, setEdit] = useState("");
+
   const {
     register,
     control,
@@ -101,9 +105,10 @@ export default function Create() {
         </form>
         <Dialog
           ref={dialog}
-          title="Save these 2 codes in case you want to change your 
-          event details later:"
+          title="Share this link for others to sign up:"
         >
+          <CopyElement label="Carpool link" code={`${window.location.host}/join?event-code=${event}`} />
+          <p>And save these 2 codes to change your event details later:</p>
           <CopyElement label="Event code" code={event} />
           <CopyElement label="Edit code" code={edit} />
         </Dialog>

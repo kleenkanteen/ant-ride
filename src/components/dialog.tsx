@@ -11,7 +11,7 @@ interface DialogProps {
 export function CopyElement({ label, code }) {
   return (
     <div className="flex items-center justify-center gap-2">
-      <span className="text-lg">
+      <span className="text-lg text-center">
         {label}: <strong>{code}</strong>
       </span>
       <button className="btn btn-xs" onClick={() => copyContent(code)}>

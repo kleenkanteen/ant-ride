@@ -3,17 +3,25 @@
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "../schemas/participants";
 import { ParticipantDetails } from "@/components/participantDetails";
 import type { IParticipantDetails } from "../schemas/participants";
-import { schema } from "../schemas/participants";
-import { toast } from "sonner";
-import { useRef, useState } from "react";
+// import { useRouter } from 'next/navigation';
+
+import { useEffect, useRef, useState } from "react";
 import ky, { type HTTPError } from "ky";
+import { useSearchParams } from 'next/navigation'
+
+import { toast } from "sonner";
 import Dialog, { CopyElement } from "@/components/dialog";
 
 export default function Join() {
   const dialog = useRef(null);
   const [edit, setEdit] = useState("");
+
+  const search_params = useSearchParams()
+  const event_code_param = search_params.get('event-code')
+
   const onSubmit = async (data) => {
     try {
       const res: any = await ky
@@ -55,6 +63,12 @@ export default function Join() {
       edit_code: "aaaaa",
     },
   });
+
+  useEffect(() => {
+    if (event_code_param) {
+      setValue("event_code", event_code_param);
+    }
+  }, []);
 
   const onInvalid = (errors) => console.error(errors);
   const eventCode = getValues("event_code");
