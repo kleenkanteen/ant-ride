@@ -102,6 +102,9 @@ export default function Carpools() {
   }, [API_KEY, lng, lat, zoom]);
 
 
+  // https://maplibre.org/maplibre-gl-js/docs/examples/geojson-line/
+  // and "Visualize agent route legs" section of https://apidocs.geoapify.com/docs/route-planner/#about
+  // I only can draw points now. read the section in the line above (106) to figure out how to draw lines. look at the format of the object in ./text.tsx
   useEffect(() => {
     if (map.current) {
     map.current.on('load', () => {
