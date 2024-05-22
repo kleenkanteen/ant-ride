@@ -102,53 +102,172 @@ export default function Carpools() {
   }, [API_KEY, lng, lat, zoom]);
 
 
-  // https://maplibre.org/maplibre-gl-js/docs/examples/geojson-line/
-  // and "Visualize agent route legs" section of https://apidocs.geoapify.com/docs/route-planner/#about
-  // I only can draw points now. read the section in the line above (106) to figure out how to draw lines. look at the format of the object in ./text.tsx
+  
+  // from https://www.geoapify.com/route-and-schedule-optimization-for-workers-with-route-planner-api
+  // secondary sources: https://apidocs.geoapify.com/docs/route-planner/#about
+  // and https://maplibre.org/maplibre-gl-js/docs/examples/geojson-line/
   useEffect(() => {
     if (map.current) {
-    map.current.on('load', () => {
-      map.current.addSource('points', {
-        "type": "geojson",
-        "data": carpools.female_carpools
-      });
+      map.current.on('load', () => {
+        // colors
+        const colors = ["#ff4d4d", "#1a8cff", "#00cc66", "#b300b3", "#e6b800", "#ff3385",
+          "#0039e6", "#408000", "#ffa31a", "#990073", "#cccc00", "#cc5200", "#6666ff", "#009999"
+        ];
 
-      map.current.addLayer({
-        id: 'points',
-        type: 'circle',
-        source: 'points',
-      });
-    });
-  }
+        notifyAboutIssues(carpools.female_carpools);
+        carpools.female_carpools.features.forEach((feature, index) => visualizeAgentWaypoints(feature, colors[index]));
+        carpools.female_carpools.features.forEach((feature, index) => visualizeAgentRoute(feature, colors[index], index));
+
+        const serviceJobsOptimizationInput = carpools.female_carpools.features.properties.params;
+
+        visualizeLocations(serviceJobsOptimizationInput, map);
+
+        function visualizeLocations(routeOptimizationTask, map) {
+          // collect unique locations
+          const locationMap = {};
+
+          routeOptimizationTask.jobs.forEach(job => {
+            const locationStr = `${job.location[1]} ${job.location[0]}`;
+            locationMap[locationStr] = job.location;
+          });
+
+          // visualize lication as a layer
+          const geoJSONObj = {
+            "type": "FeatureCollection",
+            "features": Object.keys(locationMap).map(locationKey => {
+              return {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": locationMap[locationKey]
+                }
+              }
+            })
+          };
+
+          map.current.addSource('locations', {
+            type: 'geojson',
+            data: geoJSONObj
+          });
+
+
+          map.current.addLayer({
+            'id': 'locations',
+            'type': 'circle',
+            'source': 'locations',
+            'paint': {
+              'circle-radius': 5,
+              'circle-color': "#ff9933",
+              'circle-stroke-width': 1,
+              'circle-stroke-color': '#994d00',
+            }
+          });
+        }
+
+        function notifyAboutIssues(result) {
+          if (result.properties.issues) {
+            alert(`The solution has issues: ${Object.keys(result.properties.issues).join(', ')}`);
+          }
+        }
+
+        function visualizeAgentWaypoints(feature, color) {
+          const waypoints = feature.properties.waypoints
+            .map((waypoint, index) => {
+              return {
+                "type": "Feature",
+                "properties": {
+                  index: index + 1
+                },
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": waypoint.location
+                }
+              }
+            });
+
+          // create points source + layer
+          map.current.addSource(`agent-${feature.properties.agent_index}-waypoints`, {
+            type: 'geojson',
+            data: {
+              "type": "FeatureCollection",
+              "features": waypoints
+            }
+          });
+
+          map.current.addLayer({
+            'id': `agent-${feature.properties.agent_index}-waypoints-circle`,
+            'type': 'circle',
+            'source': `agent-${feature.properties.agent_index}-waypoints`,
+            'paint': {
+              'circle-radius': 10,
+              'circle-color': color,
+              'circle-stroke-width': 1,
+              'circle-stroke-color': "rgba(0,0,0,0.2)"
+            }
+          });
+
+          map.current.addLayer({
+            'id': `agent-${feature.properties.agent_index}-waypoints-text`,
+            'type': 'symbol',
+            'source': `agent-${feature.properties.agent_index}-waypoints`,
+            'layout': {
+              "text-field": '{index}',
+              'text-allow-overlap': false,
+              "text-font": [
+                "Roboto", "Helvetica Neue", "sans-serif"
+              ],
+              "text-size": 12
+            },
+            'paint': {
+              "text-color": "rgba(255, 255, 255, 1)"
+            }
+          });
+        }
+
+        function visualizeAgentRoute(feature, color, index) {
+          const lineWidth = 7 - index;
+          const shift = -2 + index * 2;
+
+          const myAPIKey = '';
+          // generate a route and visualize it
+          const waypoints = feature.properties.waypoints.map(waypoint => waypoint.location[1] + ',' + waypoint.location[0]).join('|');
+          fetch(`https://api.geoapify.com/v1/routing?waypoints=${waypoints}&mode=drive&apiKey=${myAPIKey}`)
+            .then(res => res.json())
+            .then(res => {
+              map.current.addSource(`agent-${feature.properties.agent_index}-route`, {
+                type: 'geojson',
+                data: res
+              });
+
+              map.current.addLayer({
+                'id': `agent-${feature.properties.agent_index}-route`,
+                'type': 'line',
+                'source': `agent-${feature.properties.agent_index}-route`,
+                'layout': {
+                  'line-cap': "round",
+                  'line-join': "round"
+                },
+                'paint': {
+                  'line-color': color,
+                  'line-width': lineWidth,
+                  'line-translate': [shift, shift]
+                }
+              });
+
+              map.current.moveLayer(`agent-${feature.properties.agent_index}-waypoints-circle`);
+              map.current.moveLayer(`agent-${feature.properties.agent_index}-waypoints-text`);
+            });
+        }
+      }
+      )
+    }
   }, [map.current]);
 
-  // if (map.current) {
-  //   map.current.addSource('carpools', {
-  //     "type": "geojson",
-  //     "data": carpools.female_carpools.features
-  //   });
-
-  //   map.current.addSource('my-data', {
-  //     "type": "geojson",
-  //     "data": {
-  //       "type": "Feature",
-  //       "geometry": {
-  //         "type": "Point",
-  //         "coordinates": [-79.6400354, 43.55777450000001]
-  //       },
-  //       "properties": {
-  //         "title": "Mapbox DC",
-  //         "marker-symbol": "monument"
-  //       }
-  //     }
-  //   });
-// }, [map]);
-
-return (
-  <div className="text-center map-wrap">
-    <div className="map-wrap">
-      <div ref={mapContainer} className="map" />
+  return (
+    <div className="text-center map-wrap">
+      <div className="map-wrap">
+        <div ref={mapContainer} className="map" />
+      </div>
     </div>
-  </div>
-)
+  )
 };
