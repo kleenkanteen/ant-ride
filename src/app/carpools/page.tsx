@@ -15,19 +15,6 @@ export default function Carpools() {
   const NEXT_PUBLIC_MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
   const [API_KEY] = useState(NEXT_PUBLIC_MAPTILER_KEY);
 
-  // async function fetchCarpools() {
-  //   const data = {
-  //     event_code: "8aTIl",
-  //     password: "928dcfaaf338f43baac2de274e683c73cfa67de87a235ac55fafc55b09bc25d5"
-  //   }
-
-  //   return await ky
-  //     .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/participant`, {
-  //       json: data,
-  //     })
-  //     .json();
-  // }
-
   useEffect(() => {
     const initializeMap = async () => {
       if (map.current) return;
@@ -38,8 +25,6 @@ export default function Carpools() {
         center: [lng, lat],
         zoom: zoom,
       });
-
-      // const carpools = await fetchCarpools();
 
       const all = carpools;
       console.log("ALL", carpools.female_carpools.features);
@@ -52,49 +37,6 @@ export default function Carpools() {
       else {
         console.log("NOT FOUND")
       }
-
-      // routePlans.forEach((agentPlan) => {
-      //   const items = agentPlan.waypoints.map((waypoint, index) =>
-      //     // @ts-ignore
-      //     new Point(waypoint.location, { index: index + 1 })
-      //   );
-
-      // create points source + layer
-      // map.addSource(`waypoints-of-agent-${agentPlan.agentIndex}`, {
-      //   type: "geojson",
-      //   data: featureCollection(items),
-      // });
-
-      //   map.addLayer({
-      //     id: `waypoints-of-agent-${agentPlan.agentIndex}`,
-      //     type: "circle",
-      //     source: `waypoints-of-agent-${agentPlan.agentIndex}`,
-      //     paint: {
-      //       "circle-radius": 10,
-      //       "circle-color": color, // set any color here
-      //       "circle-stroke-width": 1,
-      //       "circle-stroke-color": darker_color, // set a darker color here
-      //     },
-      //   });
-
-      //   map.addLayer({
-      //     id: `waypoints-text-of-agent-${agentPlan.agentIndex}`,
-      //     type: "symbol",
-      //     source: `waypoints-of-agent-${agentPlan.agentIndex}`,
-      //     layout: {
-      //       "text-field": "{index}",
-      //       "text-allow-overlap": false,
-      //       "text-font": ["Roboto", "Helvetica Neue", "sans-serif"],
-      //       "text-size": 12,
-      //     },
-      //     paint: {
-      //       "text-color": textColor, // set contrast to the color textColor
-      //     },
-      // }
-
-
-      // });
-
     };
 
     initializeMap();
