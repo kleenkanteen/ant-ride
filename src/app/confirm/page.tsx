@@ -41,25 +41,21 @@ const ConfirmPage: React.FC = () => {
 
   return params.get("event_code") && params.get("edit_code") ? (
     <div className="text-center">
-      <h1 className="text-3xl font-bold text-white">Excited for the Event?</h1>
-      <p className="mb-8 mt-4 text-xl">
-        Let us know if you're still on board for the event and ready to join the
-        carpool!
-      </p>
+      <p className="mb-8 mt-4 text-xl">Confirm my spot</p>
       <div className="flex items-center justify-center gap-8">
         <button
           className="btn btn-outline"
           onClick={() => handleDecision({ remove: true })}
           disabled={loading}
         >
-          No, I'm not going
+          No
         </button>
         <button
           className="btn btn-primary"
           onClick={() => handleDecision({ confirmed: true })}
           disabled={loading}
         >
-          Yes. I'm going!
+          Yes
         </button>
       </div>
     </div>

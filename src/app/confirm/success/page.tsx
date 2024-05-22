@@ -10,10 +10,9 @@ const SuccessPage = () => {
     <div className="text-center">
       <p className="my-8 text-8xl">👍</p>
       <h1 className="text-xl">
-        Thanks for letting us know about your decision!{" "}
-        {params.get("remove") ? "We've removed you from the carpool. " : ""}{" "}
-        This helps us calculate the most efficient routes for everyone
-        participating in the carpool.
+        {params.get("remove")
+          ? "We've removed you from the carpool."
+          : "You spot has been confirmed."}
       </h1>
     </div>
   );
