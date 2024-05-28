@@ -1,20 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 
+import { CarpoolDetails } from "@/components/carpoolDetails";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { CarpoolDetails } from "@/components/carpoolDetails";
 
-import { useRef, useState } from "react";
 import ky, { type HTTPError } from "ky";
+import { useEffect, useRef, useState } from "react";
 
-import { toast } from "sonner";
 import Dialog, { CopyElement } from "@/components/dialog";
+import { toast } from "sonner";
+
 
 interface IFormInputs {
   name: string;
@@ -40,6 +41,7 @@ export default function Create() {
   const dialog = useRef(null);
   const [event, setEvent] = useState("");
   const [edit, setEdit] = useState("");
+  const [domain, set_domain] = useState("");
 
   const {
     register,
@@ -92,6 +94,10 @@ export default function Create() {
   };
   const onInvalid = (errors) => console.error(errors);
 
+  useEffect(() => {
+    set_domain(window.location.host);
+  }, []);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -107,7 +113,7 @@ export default function Create() {
           ref={dialog}
           title="Share this link for others to sign up:"
         >
-          <CopyElement label="Carpool link" code={`${window.location.host}/join?event-code=${event}`} />
+          { domain && <CopyElement label="Carpool link" code={`${domain}/join?event-code=${event}`} /> }
           <p>And save these 2 codes to change your event details later:</p>
           <CopyElement label="Event code" code={event} />
           <CopyElement label="Edit code" code={edit} />
