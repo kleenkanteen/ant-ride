@@ -514,3 +514,6 @@ export const carpools: any =
         ]
       }
 }
+
+const path = "https://maps.googleapis.com/maps/dir/?api=1?origin=2473%20Rosemary%20Dr%2C%20Mississauga%2C%20ON%20L5C%201X1%2C%20Canada&destination=3065%20Mavis%20Rd%2C%20Mississauga%2C%20ON%20L5C%201T7%2C%20Canada%7C43.5691669%7C-79.632841&waypoints=1039%20Cedarglen%20Gate%2C%20Mississauga%2C%20ON%20L5C%203A7%2C%20Canada%7C3065%20Mavis%20Rd%2C%20Mississauga%2C%20ON%20L5C%201T7%2C%20Canada%7C"
+const bob = "https://www.google.com/maps/dir/Ruby+Blade+Tattoos,+612+Arbor+Rd,+Mississauga,+ON+L5G+2J9/University+of+Toronto+Mississauga,+3359+Mississauga+Rd,+Mississauga,+ON+L5L+1C6/Clarkson+GO+Parking+Garage,+Mississauga,+ON+L5J+1K5/@43.544815,-79.6662191,13z/data=!4m19!4m18!1m5!1m1!1s0x882b47b32c0245e5:0xbd3b0ebe35f30321!2m2!1d-79.578101!2d43.5761018!1m5!1m1!1s0x882b43e3135af203:0x713c168866b9f492!2m2!1d-79.6626841!2d43.5482599!1m5!1m1!1s0x882b4548df5ee2b5:0xdf30a32f3a508d7e!2m2!1d-79.6339805!2d43.5112021?entry=ttu"
