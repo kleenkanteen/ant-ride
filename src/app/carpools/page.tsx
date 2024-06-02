@@ -1,77 +1,77 @@
-"use client";
+"use client"
 
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import { useEffect, useRef, useState } from 'react';
-import './map.css';
-import { carpools } from "./test";
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
+
+import maplibregl from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
+import './map.css'
+
+import ky from 'ky'
 
 export default function Carpools() {
-  const mapContainer: any = useRef(null);
-  const map: any = useRef(null);
-  const [lng] = useState(-79.64630033698033);
-  const [lat] = useState(43.55310371818801);
-  const [zoom] = useState(14);
-  const NEXT_PUBLIC_MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
-  const [API_KEY] = useState(NEXT_PUBLIC_MAPTILER_KEY);
+  const mapContainer: any = useRef(null)
+  const map: any = useRef(null)
+  const carpools: any = useRef(null)
+  const jobs: any = useRef(null)
+  const [lng] = useState(-79.64630033698033)
+  const [lat] = useState(43.55310371818801)
+  const [zoom] = useState(14)
+  const NEXT_PUBLIC_MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY
+  const [API_KEY] = useState(NEXT_PUBLIC_MAPTILER_KEY)
+
+  const search_params = useSearchParams()
+  const event_code_param = search_params.get('event-code')
+  console.log("EVENT CODE", event_code_param)
 
   useEffect(() => {
     const initializeMap = async () => {
-      if (map.current) return;
+      if (map.current) return
 
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
         center: [lng, lat],
         zoom: zoom,
-      });
+      })
 
-      const all = carpools;
-      console.log("ALL", carpools.female_carpools.features);
-      console.log("REVEAL THEYSELF", all.features);
-      let routePlans;
-      if (carpools?.features) {
-        routePlans = await carpools.features[0]?.properties;
-        console.log("FOUND")
-      }
-      else {
-        console.log("NOT FOUND")
-      }
-    };
+      let res: any = await ky.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/carpools?event-code=${event_code_param}`).json()
+      carpools.current = res.data.carpool_geojson
+      jobs.current = res.data.jobs
+      console.log("CARPOOLS", carpools.current)
+      console.log("jobs", jobs.current)
 
-    initializeMap();
+      // console.log("DIE", carpools.current)
+    }
 
-  }, [API_KEY, lng, lat, zoom]);
+    initializeMap()
+  }, [API_KEY, lng, lat, zoom])
 
-
-  
   // from https://www.geoapify.com/route-and-schedule-optimization-for-workers-with-route-planner-api
   // secondary sources: https://apidocs.geoapify.com/docs/route-planner/#about
   // and https://maplibre.org/maplibre-gl-js/docs/examples/geojson-line/
   useEffect(() => {
     if (map.current) {
       map.current.on('load', () => {
-        // colors
         const colors = ["#ff4d4d", "#1a8cff", "#00cc66", "#b300b3", "#e6b800", "#ff3385",
-          "#0039e6", "#408000", "#ffa31a", "#990073", "#cccc00", "#cc5200", "#6666ff", "#009999"
-        ];
+        "#0039e6", "#408000", "#ffa31a", "#990073", "#cccc00", "#cc5200", "#6666ff", "#009999"]
 
-        notifyAboutIssues(carpools.female_carpools);
-        carpools.female_carpools.features.forEach((feature, index) => visualizeAgentWaypoints(feature, colors[index]));
-        carpools.female_carpools.features.forEach((feature, index) => visualizeAgentRoute(feature, colors[index], index));
+        visualizeLocations(jobs.current, map)
+        let index = 0
+        for (const [key, value] of Object.entries(carpools.current)) {
+          visualizeAgentWaypoints(key, value, colors[index])
+          visualizeAgentRoute(key, value, colors[index], index)
+          index += 1
+        }
 
-        const serviceJobsOptimizationInput = carpools.female_carpools.features.properties.params;
-
-        visualizeLocations(serviceJobsOptimizationInput, map);
-
-        function visualizeLocations(routeOptimizationTask, map) {
+        function visualizeLocations(all_jobs, map) {
           // collect unique locations
-          const locationMap = {};
+          const locationMap = {}
 
-          routeOptimizationTask.jobs.forEach(job => {
-            const locationStr = `${job.location[1]} ${job.location[0]}`;
-            locationMap[locationStr] = job.location;
-          });
+          all_jobs.forEach(job => {
+            const locationStr = `${job.location[1]} ${job.location[0]}`
+            locationMap[locationStr] = job.location
+          })
 
           // visualize lication as a layer
           const geoJSONObj = {
@@ -85,13 +85,12 @@ export default function Carpools() {
                 }
               }
             })
-          };
+          }
 
           map.current.addSource('locations', {
             type: 'geojson',
             data: geoJSONObj
-          });
-
+          })
 
           map.current.addLayer({
             'id': 'locations',
@@ -103,17 +102,12 @@ export default function Carpools() {
               'circle-stroke-width': 1,
               'circle-stroke-color': '#994d00',
             }
-          });
+          })
         }
 
-        function notifyAboutIssues(result) {
-          if (result.properties.issues) {
-            alert(`The solution has issues: ${Object.keys(result.properties.issues).join(', ')}`);
-          }
-        }
-
-        function visualizeAgentWaypoints(feature, color) {
-          const waypoints = feature.properties.waypoints
+        function visualizeAgentWaypoints(agent_index, data, color) {
+          console.log("WAYPOITNS", data)
+          const waypoints = data.properties.waypoints
             .map((waypoint, index) => {
               return {
                 "type": "Feature",
@@ -122,36 +116,36 @@ export default function Carpools() {
                 },
                 "geometry": {
                   "type": "Point",
-                  "coordinates": waypoint.location
+                  "coordinates": [waypoint.lon, waypoint.lat]
                 }
               }
-            });
+            })
 
           // create points source + layer
-          map.current.addSource(`agent-${feature.properties.agent_index}-waypoints`, {
+          map.current.addSource(`agent-${agent_index}-waypoints`, {
             type: 'geojson',
             data: {
               "type": "FeatureCollection",
               "features": waypoints
             }
-          });
+          })
 
           map.current.addLayer({
-            'id': `agent-${feature.properties.agent_index}-waypoints-circle`,
+            'id': `agent-${agent_index}-waypoints-circle`,
             'type': 'circle',
-            'source': `agent-${feature.properties.agent_index}-waypoints`,
+            'source': `agent-${agent_index}-waypoints`,
             'paint': {
               'circle-radius': 10,
               'circle-color': color,
               'circle-stroke-width': 1,
               'circle-stroke-color': "rgba(0,0,0,0.2)"
             }
-          });
+          })
 
           map.current.addLayer({
-            'id': `agent-${feature.properties.agent_index}-waypoints-text`,
+            'id': `agent-${agent_index}-waypoints-text`,
             'type': 'symbol',
-            'source': `agent-${feature.properties.agent_index}-waypoints`,
+            'source': `agent-${agent_index}-waypoints`,
             'layout': {
               "text-field": '{index}',
               'text-allow-overlap': false,
@@ -163,47 +157,39 @@ export default function Carpools() {
             'paint': {
               "text-color": "rgba(255, 255, 255, 1)"
             }
-          });
+          })
         }
 
-        function visualizeAgentRoute(feature, color, index) {
-          const lineWidth = 7 - index;
-          const shift = -2 + index * 2;
+        function visualizeAgentRoute(agent_index, waypoints, color, index) {
+          const lineWidth = 7 - index
+          const shift = -2 + index * 2
 
-          const myAPIKey = '';
-          // generate a route and visualize it
-          const waypoints = feature.properties.waypoints.map(waypoint => waypoint.location[1] + ',' + waypoint.location[0]).join('|');
-          fetch(`https://api.geoapify.com/v1/routing?waypoints=${waypoints}&mode=drive&apiKey=${myAPIKey}`)
-            .then(res => res.json())
-            .then(res => {
-              map.current.addSource(`agent-${feature.properties.agent_index}-route`, {
-                type: 'geojson',
-                data: res
-              });
+          map.current.addSource(`agent-${agent_index}-route`, {
+            type: 'geojson',
+            data: waypoints
+          })
 
-              map.current.addLayer({
-                'id': `agent-${feature.properties.agent_index}-route`,
-                'type': 'line',
-                'source': `agent-${feature.properties.agent_index}-route`,
-                'layout': {
-                  'line-cap': "round",
-                  'line-join': "round"
-                },
-                'paint': {
-                  'line-color': color,
-                  'line-width': lineWidth,
-                  'line-translate': [shift, shift]
-                }
-              });
+          map.current.addLayer({
+            'id': `agent-${agent_index}-route`,
+            'type': 'line',
+            'source': `agent-${agent_index}-route`,
+            'layout': {
+              'line-cap': "round",
+              'line-join': "round"
+            },
+            'paint': {
+              'line-color': color,
+              'line-width': lineWidth,
+              'line-translate': [shift, shift]
+            }
+          })
 
-              map.current.moveLayer(`agent-${feature.properties.agent_index}-waypoints-circle`);
-              map.current.moveLayer(`agent-${feature.properties.agent_index}-waypoints-text`);
-            });
+          map.current.moveLayer(`agent-${agent_index}-waypoints-circle`)
+          map.current.moveLayer(`agent-${agent_index}-waypoints-text`)
         }
-      }
-      )
+      })
     }
-  }, [map.current]);
+  }, [map.current])
 
   return (
     <div className="text-center map-wrap">
@@ -212,4 +198,4 @@ export default function Carpools() {
       </div>
     </div>
   )
-};
+}
