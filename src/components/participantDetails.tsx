@@ -91,7 +91,6 @@ export function ParticipantDetails({
         </div>
         <input
           type="text"
-          placeholder="0"
           className="input input-bordered w-full max-w-xs"
           {...register("seats_available")}
         />
