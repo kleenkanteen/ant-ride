@@ -29,7 +29,7 @@ export default function RootLayout({
               ant ride
             </h1>
             {children}
-            <span className="font-bold text-white text-lg">Under construction</span>
+            <span className="font-bold text-white text-lg">Currently in beta</span>
             <span><a target="_blank" href="https://github.com/kleenkanteen/ant-ride">Made with ❤️ by Sabih & co.</a></span>
             <Toaster
               toastOptions={{

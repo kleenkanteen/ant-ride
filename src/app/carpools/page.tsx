@@ -1,5 +1,9 @@
 "use client"
 
+// turn off eslint
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
@@ -35,7 +39,12 @@ export default function Carpools() {
         zoom: zoom,
       })
 
-      let res: any = await ky.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/carpools?event-code=${event_code_param}`).json()
+      let res;
+      try { 
+        const res: any = await ky.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/carpools?event-code=${event_code_param}`).json() 
+      }
+      catch (error) { console.error(error) }
+
       carpools.current = res.data.carpool_geojson
       jobs.current = res.data.jobs
       console.log("CARPOOLS", carpools.current)
@@ -44,6 +53,8 @@ export default function Carpools() {
       // console.log("DIE", carpools.current)
     }
 
+    // silecne eslint
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initializeMap()
   }, [API_KEY, lng, lat, zoom])
 
