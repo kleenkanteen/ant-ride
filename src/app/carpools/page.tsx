@@ -26,7 +26,6 @@ export default function Carpools() {
 
   const search_params = useSearchParams()
   const event_code_param = search_params.get('event-code')
-  console.log("EVENT CODE", event_code_param)
 
   useEffect(() => {
     const initializeMap = async () => {
@@ -47,10 +46,6 @@ export default function Carpools() {
 
       carpools.current = res.data.carpool_geojson
       jobs.current = res.data.jobs
-      console.log("CARPOOLS", carpools.current)
-      console.log("jobs", jobs.current)
-
-      // console.log("DIE", carpools.current)
     }
 
     // silecne eslint
@@ -59,8 +54,7 @@ export default function Carpools() {
   }, [API_KEY, lng, lat, zoom])
 
   // from https://www.geoapify.com/route-and-schedule-optimization-for-workers-with-route-planner-api
-  // secondary sources: https://apidocs.geoapify.com/docs/route-planner/#about
-  // and https://maplibre.org/maplibre-gl-js/docs/examples/geojson-line/
+  // secondary sources: https://apidocs.geoapify.com/docs/route-planner/#about and https://maplibre.org/maplibre-gl-js/docs/examples/geojson-line/
   useEffect(() => {
     if (map.current) {
       map.current.on('load', () => {
@@ -117,7 +111,6 @@ export default function Carpools() {
         }
 
         function visualizeAgentWaypoints(agent_index, data, color) {
-          console.log("WAYPOITNS", data)
           const waypoints = data.properties.waypoints
             .map((waypoint, index) => {
               return {
