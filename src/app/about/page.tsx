@@ -1,3 +1,4 @@
+
 "use client";
 
 import ImageModal from "@/components/imageModal";
