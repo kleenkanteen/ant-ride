@@ -1,14 +1,18 @@
 import ky from "ky";
 import CarpoolsMap from "../../components/map/map";
 
+interface SearchParams {
+  search_params: string;
+}
+
 export default async function Carpools({
   searchParams,
 }: {
-  searchParams: { [key: string]: string };
+  searchParams: SearchParams;
 }) {
-  const event_code_param = searchParams["event-code"];
+  const event_code_param: string = searchParams["event-code"] as string;
 
-  let res: any;
+  let res: unknown;
   try {
     res = await ky
       .get(
