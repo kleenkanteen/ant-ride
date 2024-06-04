@@ -1,6 +1,5 @@
-import CarpoolMap from "@/components/map";
 import ky from "ky";
-import CarpoolsMap from "../../components/map";
+import CarpoolsMap from "../../components/map/map";
 
 export default async function Carpools({
   searchParams,
