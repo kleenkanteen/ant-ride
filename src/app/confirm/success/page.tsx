@@ -12,7 +12,7 @@ const SuccessPage = () => {
       <h1 className="text-xl">
         {params.get("remove")
           ? "We've removed you from the carpool."
-          : "You spot has been confirmed."}
+          : "Your spot has been confirmed."}
       </h1>
     </div>
   );
