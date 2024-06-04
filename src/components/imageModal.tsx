@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 interface ImageData {
   path: string;
@@ -19,7 +19,6 @@ export default function ImageModal({
     path: "",
     alt: "",
   });
-  const modalRef = useRef<HTMLDivElement>(null);
 
   function openModal() {
     setSelectedImageData({ path, alt });
@@ -30,27 +29,8 @@ export default function ImageModal({
     setIsModalOpen(false);
   }
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        closeModal();
-      }
-    }
-
-    if (isModalOpen) {
-      window.addEventListener("click", handleClickOutside);
-    }
-
-    return () => {
-      window.removeEventListener("click", handleClickOutside);
-    };
-  }, [isModalOpen]);
-
   return (
-    <div ref={modalRef}>
+    <div>
       <img
         src={path}
         alt={alt}
