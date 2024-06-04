@@ -20,5 +20,5 @@ export default async function Carpools({
     console.error(error);
   }
 
-  return <CarpoolMap event_data={res} />;
+  return <CarpoolsMap event_data={res} />;
 }
