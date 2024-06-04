@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { Suspense } from "react";
+import Link from "next/link";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,6 +34,12 @@ export default function RootLayout({
             <span className="text-lg font-bold text-white">
               Currently in beta
             </span>
+            <Link
+              href="/about"
+              className="text-white underline underline-offset-2"
+            >
+              About
+            </Link>
             <span>
               <a
                 target="_blank"
