@@ -26,28 +26,30 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
       <body>
         <main className="flex min-h-screen flex-col items-center justify-center bg-gray-800 py-5">
-          <div className="flex flex-col items-center gap-12">
+          <div className="flex flex-col items-center justify-center gap-12">
             <h1 className="mb-4 text-center text-5xl font-extrabold tracking-tight text-white underline decoration-blue-700 decoration-wavy underline-offset-8 sm:text-[5rem]">
               ant ride
             </h1>
             <Suspense>{children}</Suspense>
-            <span className="text-lg font-bold text-white">
-              Currently in beta
-            </span>
-            <Link
-              href="/about"
-              className="text-white underline underline-offset-2"
-            >
-              About
-            </Link>
-            <span>
-              <a
-                target="_blank"
-                href="https://github.com/kleenkanteen/ant-ride"
+            <div className="flex flex-col items-center justify-center space-y-6 ">
+              <span className="text-lg font-bold text-white">
+                Currently in beta
+              </span>
+              <Link
+                href="/about"
+                className="text-white underline underline-offset-2"
               >
-                Made with ❤️ by Sabih & co.
-              </a>
-            </span>
+                About
+              </Link>
+              <span className="">
+                <a
+                  target="_blank"
+                  href="https://github.com/kleenkanteen/ant-ride"
+                >
+                  Made with ❤️ by Sabih & co.
+                </a>
+              </span>
+            </div>
             <Toaster
               toastOptions={{
                 unstyled: true,
