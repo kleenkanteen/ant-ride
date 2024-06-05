@@ -41,7 +41,7 @@ const ConfirmPage: React.FC = () => {
 
   return params.get("event_code") && params.get("edit_code") ? (
     <div className="text-center">
-      <p className="mb-8 mt-4 text-xl">Confirm my spot</p>
+      <p className="mb-8 mt-4 text-xl">Confirm my spot:</p>
       <div className="flex items-center justify-center gap-8">
         <button
           className="btn btn-outline"

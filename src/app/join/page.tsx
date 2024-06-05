@@ -100,8 +100,7 @@ export default function Join() {
       </form>
       <Dialog
         ref={dialog}
-        title="Save these 2 codes in case you want to change your details
-            or remove yourself later:"
+        title="Screenshot or save these 2 codes to edit your details later:"
       >
         <CopyElement label="Event code" code={eventCode} />
         <CopyElement label="Edit code" code={edit} />

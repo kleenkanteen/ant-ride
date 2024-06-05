@@ -2,9 +2,9 @@ import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 
 import { Inter } from "next/font/google";
-import { Toaster } from "sonner";
-import { Suspense } from "react";
 import Link from "next/link";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,11 +30,11 @@ export default function RootLayout({
             <h1 className="mb-4 text-center text-5xl font-extrabold tracking-tight text-white underline decoration-blue-700 decoration-wavy underline-offset-8 sm:text-[5rem]">
               ant ride
             </h1>
+            <span className="text-lg font-bold text-white">
+              Currently in beta
+            </span>
             <Suspense>{children}</Suspense>
             <div className="flex flex-col items-center justify-center space-y-6 ">
-              <span className="text-lg font-bold text-white">
-                Currently in beta
-              </span>
               <Link
                 href="/about"
                 className="text-white underline underline-offset-2"
@@ -49,6 +49,11 @@ export default function RootLayout({
                   Made with ❤️ by Sabih & co.
                 </a>
               </span>
+              <a
+                target="_blank"
+                href="https://ant-ride.ducalis.io/demo-board">
+                Send feedback
+              </a>
             </div>
             <Toaster
               toastOptions={{

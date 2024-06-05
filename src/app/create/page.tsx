@@ -114,7 +114,7 @@ export default function Create() {
           title="Share this link for others to sign up:"
         >
           { domain && <CopyElement label="Carpool link" code={`${domain}/join?event-code=${event}`} /> }
-          <p>And save these 2 codes to change your event details later:</p>
+          <p>And screenshot or save these 2 codes to change your event details later:</p>
           <CopyElement label="Event code" code={event} />
           <CopyElement label="Edit code" code={edit} />
         </Dialog>
