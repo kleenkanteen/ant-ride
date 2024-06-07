@@ -1,4 +1,3 @@
-
 "use client";
 
 import ImageModal from "@/components/imageModal";
@@ -24,7 +23,7 @@ export default function About() {
         <p className="text-center">
           <a
             className="underline-offset cursor-pointer text-center text-white underline"
-            href=""
+            href="https://www.youtube.com/watch?v=ToVn8tVQ0cc"
           >
             Video demo
           </a>
