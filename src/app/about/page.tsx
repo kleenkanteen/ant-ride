@@ -24,6 +24,7 @@ export default function About() {
           <a
             className="underline-offset cursor-pointer text-center text-white underline"
             href="https://www.youtube.com/watch?v=ToVn8tVQ0cc"
+            target="_blank"
           >
             Video demo
           </a>
