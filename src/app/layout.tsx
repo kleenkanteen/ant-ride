@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import Head from 'next/head'
 
 import { Inter } from "next/font/google";
 import Link from "next/link";
@@ -24,6 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
+      <Head>
+        <link rel="canonical" href="https://antride.ca" />
+      </Head>
       <body>
         <main className="flex min-h-screen flex-col items-center justify-center bg-gray-800 py-5">
           <div className="flex flex-col items-center justify-center gap-12">
