@@ -15,6 +15,9 @@ export const metadata = {
   title: "ant ride",
   description: "Carpool",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  alternates: {
+    canonical: './',
+  }
 };
 
 export default function RootLayout({
