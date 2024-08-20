@@ -3,6 +3,8 @@
 import PhoneInput from "./phoneInput";
 import { AddressAutocomplete } from "./addressAutocomplete";
 
+import Link from "next/link";
+
 export function ParticipantDetails({
   register,
   errors,
@@ -104,6 +106,7 @@ export function ParticipantDetails({
       >
         Submit
       </button>
+      <p>By clicking submit, you agree to receiving SMS messages about carpool updates and to the <Link className="underline" href="/privacy-policy">Privacy Policy</Link>.</p> 
     </div>
   );
 }
