@@ -38,25 +38,39 @@ export default function RootLayout({
             </span>
             <Suspense>{children}</Suspense>
             <div className="flex flex-col items-center justify-center space-y-6 ">
+
               <Link
                 href="/about"
-                className="text-white underline underline-offset-2"
+                className="btn btn-outline btn-sm"
               >
                 About
               </Link>
-              <span className="">
-                <a
+
+              <a
                   target="_blank"
                   href="https://github.com/kleenkanteen/ant-ride"
                 >
                   Made with ❤️ by Sabih & co.
-                </a>
-              </span>
-              <a
-                target="_blank"
-                href="https://ant-ride.ducalis.io/demo-board">
-                Send feedback
               </a>
+              
+              <span>
+                
+                <Link
+                  target="_blank"
+                  href="https://ant-ride.ducalis.io/demo-board">
+                  Send feedback
+                </Link>
+                {' | ' }
+                <Link
+                  href="/privacy-policy">
+                  Privacy Policy
+                </Link>
+                {' | ' }
+                <Link
+                  href="/terms-of-service">
+                  Terms of Service
+                </Link>
+              </span>
             </div>
             <Toaster
               toastOptions={{
