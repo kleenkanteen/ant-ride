@@ -106,7 +106,7 @@ export function ParticipantDetails({
       >
         Submit
       </button>
-      <p>By clicking submit, you agree to receiving SMS messages about carpool updates and to the <Link className="underline" href="/privacy-policy">Privacy Policy</Link>.</p> 
+        <p className="max-w-64">By clicking submit, you agree to receive SMS carpool updates and to the <Link className="underline" href="/privacy-policy">Privacy Policy</Link>.</p>  
     </div>
   );
 }
