@@ -41,7 +41,7 @@ export default function RootLayout({
 
               <Link
                 href="/about"
-                className="btn btn-outline btn-sm"
+                className="btn btn-outline btn-sm -mt-5"
               >
                 Demo
               </Link>
@@ -53,24 +53,19 @@ export default function RootLayout({
                   Made with ❤️ by Sabih & co.
               </a>
               
-              <span>
-                
                 <Link
                   target="_blank"
                   href="https://ant-ride.ducalis.io/demo-board">
                   Send feedback
                 </Link>
-                {' | ' }
                 <Link
                   href="/privacy-policy">
                   Privacy Policy
                 </Link>
-                {' | ' }
                 <Link
                   href="/terms-of-service">
                   Terms of Service
                 </Link>
-              </span>
             </div>
             <Toaster
               toastOptions={{
