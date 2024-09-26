@@ -43,7 +43,7 @@ export default function RootLayout({
                 href="/about"
                 className="btn btn-outline btn-sm"
               >
-                About
+                Demo
               </Link>
 
               <a
