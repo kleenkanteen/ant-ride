@@ -100,7 +100,7 @@ export function ParticipantDetails({
         <p className="text-red-500">{errors.seats_available?.message}</p>
       </label>
       <div className="flex items-center max-w-64 gap-4">
-        <input type="checkbox" defaultChecked className="checkbox" />
+        <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
         <p>
           By clicking submit, you agree to receive SMS carpool updates and to the 
           <Link className="underline" href="/privacy-policy"> Privacy Policy</Link>. Message and data rates may apply.
