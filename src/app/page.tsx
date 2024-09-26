@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col justify-center items-center gap-12">
       <div style={{ maxWidth: '90%' }}>
-        <h1 className="2xl:text-[8rem] sm:text-[4rem] font-extrabold tracking-tight text-white text-center">
+        <h1 className="2xl:text-[5rem] sm:text-[3rem] font-extrabold tracking-tight text-white text-center">
           The
           {' '}
           <span className="bg-gradient-to-r from-indigo-700 via-blue-500 to-green-600 inline-block text-transparent bg-clip-text">
