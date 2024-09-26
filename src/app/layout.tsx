@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gray-800 py-5">
+        <main className="flex min-h-screen w-full flex-col items-center justify-center bg-gray-800 py-10">
           <div className="flex flex-col items-center justify-center gap-12">
             <h1 className="mb-4 text-center text-5xl font-extrabold tracking-tight text-white underline decoration-blue-700 decoration-wavy underline-offset-8 sm:text-[5rem]">
               ant ride
