@@ -47,6 +47,7 @@ export default function RootLayout({
               </Link>
 
               <a
+                  className="text-gray-400"
                   target="_blank"
                   href="https://github.com/kleenkanteen/ant-ride"
                 >
@@ -54,15 +55,18 @@ export default function RootLayout({
               </a>
               
                 <Link
+                  className="text-gray-400"
                   target="_blank"
                   href="https://ant-ride.ducalis.io/demo-board">
                   Send feedback
                 </Link>
                 <Link
+                  className="text-gray-400"
                   href="/privacy-policy">
                   Privacy Policy
                 </Link>
                 <Link
+                  className="text-gray-400"
                   href="/terms-of-service">
                   Terms of Service
                 </Link>
