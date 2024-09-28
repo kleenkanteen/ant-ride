@@ -104,7 +104,7 @@ export default function Join() {
       >
         <CopyElement label="Event code" code={eventCode} />
         <CopyElement label="Edit code" code={edit} />
-        <p>
+        <p className="text-white">
           You will get a text message 48 hours before the event start, asking you to confirm your seat. Then 24 hours
           prior, you will be sent your assigned carpool details. Likewise if you are a driver, but for your route.
         </p>
