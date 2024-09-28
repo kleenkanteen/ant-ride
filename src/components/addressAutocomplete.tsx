@@ -60,15 +60,12 @@ export function AddressAutocomplete({ setValue }) {
               />
               <div className="dropdown-content top-14 max-h-96 flex-col overflow-auto rounded-md bg-base-200">
                 {suggestions.map((suggestion, index) => {
-                  const className = suggestion.active
-                    ? "suggestion-item--active"
-                    : "suggestion-item";
                   return (
                     <div
                       key={`${index}`}
                       {...getSuggestionItemProps(suggestion, {
                         className:
-                          "border-b cursor-pointer border-b-base-content/10 p-4 text-base w-full",
+                          "border-b cursor-pointer border-b-base-content/10 p-4 text-base w-full text-white",
                       })}
                     >
                       <span key={index}>{suggestion.description}</span>

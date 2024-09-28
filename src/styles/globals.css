@@ -5,3 +5,19 @@
 .btn {
     @apply text-white;
 }
+
+@layer base {
+    p {
+        @apply text-white;
+    }
+    span {
+        @apply text-white;
+    }
+    input {
+        @apply text-white;
+    }
+}
+
+.label-text {
+    color: white;
+}

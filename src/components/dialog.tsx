@@ -29,7 +29,7 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>((props, ref) => {
       className="modal modal-middle"
     >
       <div className="modal-box flex flex-col items-center justify-center gap-8">
-        <h3 className="text-xl font-bold text-center">{props.title}</h3>
+        <h3 className="text-xl text-gray-200 font-bold text-center">{props.title}</h3>
         {props.children}
         <div className="modal-action my-0">
           <form method="dialog">
