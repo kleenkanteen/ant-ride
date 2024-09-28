@@ -13,9 +13,6 @@
     span {
         @apply text-white;
     }
-    input {
-        @apply text-white;
-    }
 }
 
 .label-text {
