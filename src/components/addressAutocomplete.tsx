@@ -65,7 +65,7 @@ export function AddressAutocomplete({ setValue }) {
                       key={`${index}`}
                       {...getSuggestionItemProps(suggestion, {
                         className:
-                          "border-b cursor-pointer border-b-base-content/10 p-4 text-base w-full text-white",
+                          "border-b cursor-pointer border-b-base-content/10 p-4 text-base w-full",
                       })}
                     >
                       <span key={index}>{suggestion.description}</span>
