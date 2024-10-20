@@ -30,9 +30,13 @@ export default function RootLayout({
       <body>
         <main className="flex min-h-screen w-full flex-col items-center justify-center bg-gray-800 py-10">
           <div className="flex flex-col items-center justify-center gap-12">
+            <Link
+                href="/"
+            >
             <h1 className="mb-4 text-center text-5xl font-extrabold tracking-tight text-white underline decoration-blue-700 decoration-wavy underline-offset-8 sm:text-[5rem]">
               ant ride
             </h1>
+            </Link>
             <span className="text-lg font-bold text-white">
               Currently in beta
             </span>
