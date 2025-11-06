@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build && node sitemap-generator.js",
+    "build": "next build",
     "dev": "next dev",
+    "generate-sitemap": "node generate-sitemap.js",
     "lint": "next lint",
     "start": "next start"
   },

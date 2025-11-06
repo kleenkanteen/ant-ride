@@ -1,5 +1,5 @@
-const { SitemapStream, streamToPromise } = require('sitemap')
-const { createWriteStream } = require('fs')
+import { SitemapStream, streamToPromise } from 'sitemap'
+import { createWriteStream } from 'fs'
 
 async function generateSitemap() {
     const sitemapStream = new SitemapStream({ hostname: 'http://localhost:3000/' })
@@ -15,7 +15,7 @@ async function generateSitemap() {
         { slug: 'product-item-a', lastmod: '2025-11-01'}
     ]
     dynamicPages.forEach(page => {
-        sitemapStream.write({ url: `/$page.slug}`, lastmod: page.lastmod, changefreq: 'weekly', priority: 0.7 })
+        sitemapStream.write({ url: `/${page.slug}`, lastmod: page.lastmod, changefreq: 'weekly', priority: 0.7 })
     })
 
     sitemapStream.end()
