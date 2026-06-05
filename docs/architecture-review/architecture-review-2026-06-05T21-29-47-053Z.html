@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Architecture review — ant ride</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+    </script>
+    <style>
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(14, 165, 233, 0.08), transparent 28%),
+          radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), transparent 22%),
+          linear-gradient(180deg, #f8fafc 0%, #f8fafc 42%, #f1f5f9 100%);
+      }
+      .seam { stroke-dasharray: 4 4; }
+      .leak { stroke: #dc2626; }
+      .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
+      .legend-chip { box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35); }
+      .mermaid { font-size: 13px; }
+    </style>
+  </head>
+  <body class="font-sans text-slate-900 antialiased">
+    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <header class="mb-8 rounded-[2rem] border border-slate-200 bg-white/90 p-6 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.32em] text-slate-400">Architecture review</p>
+            <h1 class="mt-2 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">ant ride</h1>
+            <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-500">Focus: deepen the modules that carry the event, participant, and carpools flows so the interface shrinks and the implementation absorbs the orchestration.</p>
+          </div>
+          <div class="grid gap-2 text-sm text-slate-600 sm:grid-cols-2 lg:grid-cols-4 lg:text-right">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 legend-chip">Solid box = module</div>
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 legend-chip">Dashed line = seam</div>
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 legend-chip">Dark box = deep module</div>
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 legend-chip">Red arrow = leak</div>
+          </div>
+        </div>
+      </header>
+
+      <section id="candidates" class="space-y-8">
+        
+    <article id="participant-intake" class="scroll-mt-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="max-w-3xl">
+          <h2 class="text-2xl font-semibold tracking-tight text-slate-950">Deepen the participant intake module</h2>
+          <p class="mt-2 text-sm text-slate-500">The join and edit participant pages both own validation, defaults, and request glue, while ParticipantDetails leaks react-hook-form state and transport details to every caller.</p>
+        </div>
+        <div class="shrink-0 rounded-full px-3 py-1 text-sm font-semibold bg-emerald-100 text-emerald-900 ring-1 ring-emerald-200">Strong</div>
+      </div>
+      <div class="mt-5 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Files</div>
+          <ul class="grid gap-2"><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/app/schemas/participants.ts</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/app/join/page.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/app/edit-participant/page.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/components/participantDetails.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/components/phoneInput.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/components/addressAutocomplete.tsx</code></li></ul>
+        </section>
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Problem</div>
+          <p class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm leading-6 text-slate-700">The join and edit participant pages both own validation, defaults, and request glue, while ParticipantDetails leaks react-hook-form state and transport details to every caller.</p>
+          <div class="mt-4 text-xs uppercase tracking-[0.22em] text-slate-400">Solution</div>
+          <p class="mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-slate-700">Move participant validation, defaults, field wiring, and submit normalization into one participant intake module; keep join and edit pages as thin adapters.</p>
+        </section>
+      </div>
+      <div class="mt-5 grid gap-4 xl:grid-cols-[1.35fr_0.65fr]">
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Before / After</div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <div class="mb-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">Before</div>
+              
+  <div class="grid gap-4">
+    
+    <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-950 text-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.22)]">
+      <div class="border-b border-slate-700 px-4 py-3">
+        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400">Module</div>
+        <div class="mt-1 text-base font-semibold text-white">Join page</div>
+      </div>
+      <div class="grid grid-rows-[1fr_1fr]">
+        <div class="min-h-[118px] border-b border-slate-700 bg-slate-900/70 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Interface</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-200"><li>• event_code</li><li>• useForm</li><li>• ParticipantDetails</li><li>• dialog</li></ul>
+        </div>
+        <div class="min-h-[118px] bg-slate-950 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Implementation</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-300"><li>• schema</li><li>• setValue / getValues</li><li>• HTTP POST to participant</li><li>• toast + error parsing</li></ul>
+        </div>
+      </div>
+    </div>
+  
+    
+    <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-950 text-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.22)]">
+      <div class="border-b border-slate-700 px-4 py-3">
+        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400">Module</div>
+        <div class="mt-1 text-base font-semibold text-white">Edit participant page</div>
+      </div>
+      <div class="grid grid-rows-[1fr_1fr]">
+        <div class="min-h-[118px] border-b border-slate-700 bg-slate-900/70 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Interface</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-200"><li>• event_code</li><li>• edit_code</li><li>• useForm</li><li>• ParticipantDetails</li></ul>
+        </div>
+        <div class="min-h-[118px] bg-slate-950 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Implementation</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-300"><li>• schema</li><li>• remove flag</li><li>• HTTP PUT to participant</li><li>• toast + error parsing</li></ul>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+            </div>
+            <div>
+              <div class="mb-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">After</div>
+              
+  <div class="flex h-full flex-col gap-3">
+    <div class="flex items-center justify-between gap-2 text-xs uppercase tracking-[0.18em] text-slate-500">
+      <div class="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-slate-600 shadow-sm">Join adapter</div>
+      <span class="h-px flex-1 bg-slate-300"></span>
+      <div class="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-slate-600 shadow-sm">Edit adapter</div>
+    </div>
+    
+    <div class="overflow-hidden rounded-2xl border border-emerald-400/60 bg-slate-950 text-slate-100 shadow-[0_18px_50px_rgba(16,185,129,0.12)]">
+      <div class="border-b border-white/10 px-4 py-3 bg-emerald-500/10">
+        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400">Module</div>
+        <div class="mt-1 text-base font-semibold text-white">Participant intake module</div>
+      </div>
+      <div class="grid grid-rows-[92px_1fr]">
+        <div class="border-b border-white/10 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Interface</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-200"><li>• One interface for join + edit</li><li>• Prefill from the route</li><li>• Field state stays internal</li></ul>
+        </div>
+        <div class="bg-slate-950 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Implementation</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-300"><li>• participant schema</li><li>• defaults + route prefill</li><li>• phone/address wiring</li><li>• submit normalization</li><li>• copy dialog / post-submit flow</li></ul>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Benefits</div>
+          <ul class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700"><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Locality: one participant schema.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Leverage: one interface across join and edit.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Tests hit one module, not two pages.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Field bugs stop leaking into callers.</span></li></ul>
+        </section>
+      </div>
+    </article>
+  
+
+        
+    <article id="event-form" class="scroll-mt-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="max-w-3xl">
+          <h2 class="text-2xl font-semibold tracking-tight text-slate-950">Deepen the event form pipeline</h2>
+          <p class="mt-2 text-sm text-slate-500">Create and edit-organizer repeat the same form schema, date and time merge, toast handling, and provider setup; CarpoolDetails is shallow because it owns the submit button and layout shell too.</p>
+        </div>
+        <div class="shrink-0 rounded-full px-3 py-1 text-sm font-semibold bg-emerald-100 text-emerald-900 ring-1 ring-emerald-200">Strong</div>
+      </div>
+      <div class="mt-5 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Files</div>
+          <ul class="grid gap-2"><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/app/create/page.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/app/edit-organizer/page.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/components/carpoolDetails.tsx</code></li></ul>
+        </section>
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Problem</div>
+          <p class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm leading-6 text-slate-700">Create and edit-organizer repeat the same form schema, date and time merge, toast handling, and provider setup; CarpoolDetails is shallow because it owns the submit button and layout shell too.</p>
+          <div class="mt-4 text-xs uppercase tracking-[0.22em] text-slate-400">Solution</div>
+          <p class="mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-slate-700">Consolidate the organizer event form behind one event module that normalizes date and time once and exposes thin create and edit adapters.</p>
+        </section>
+      </div>
+      <div class="mt-5 grid gap-4 xl:grid-cols-[1.35fr_0.65fr]">
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Before / After</div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <div class="mb-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">Before</div>
+              
+  <div class="grid gap-4">
+    
+    <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-950 text-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.22)]">
+      <div class="border-b border-slate-700 px-4 py-3">
+        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400">Module</div>
+        <div class="mt-1 text-base font-semibold text-white">Create organizer page</div>
+      </div>
+      <div class="grid grid-rows-[1fr_1fr]">
+        <div class="min-h-[118px] border-b border-slate-700 bg-slate-900/70 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Interface</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-200"><li>• event name</li><li>• date picker</li><li>• time picker</li><li>• address autocomplete</li></ul>
+        </div>
+        <div class="min-h-[118px] bg-slate-950 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Implementation</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-300"><li>• duplicate schema</li><li>• date + time merge</li><li>• HTTP POST to event</li><li>• toast + error parsing</li></ul>
+        </div>
+      </div>
+    </div>
+  
+    
+    <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-950 text-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.22)]">
+      <div class="border-b border-slate-700 px-4 py-3">
+        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400">Module</div>
+        <div class="mt-1 text-base font-semibold text-white">Edit organizer page</div>
+      </div>
+      <div class="grid grid-rows-[1fr_1fr]">
+        <div class="min-h-[118px] border-b border-slate-700 bg-slate-900/70 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Interface</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-200"><li>• event_code</li><li>• edit_code</li><li>• event fields</li><li>• date/time pickers</li></ul>
+        </div>
+        <div class="min-h-[118px] bg-slate-950 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Implementation</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-300"><li>• duplicate schema</li><li>• date + time merge</li><li>• HTTP PUT to event</li><li>• toast + error parsing</li></ul>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+            </div>
+            <div>
+              <div class="mb-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">After</div>
+              
+  <div class="flex h-full flex-col gap-3">
+    <div class="flex items-center justify-between gap-2 text-xs uppercase tracking-[0.18em] text-slate-500">
+      <div class="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-slate-600 shadow-sm">Create adapter</div>
+      <span class="h-px flex-1 bg-slate-300"></span>
+      <div class="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-slate-600 shadow-sm">Edit adapter</div>
+    </div>
+    
+    <div class="overflow-hidden rounded-2xl border border-indigo-400/60 bg-slate-950 text-slate-100 shadow-[0_18px_50px_rgba(99,102,241,0.12)]">
+      <div class="border-b border-white/10 px-4 py-3 bg-indigo-500/10">
+        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400">Module</div>
+        <div class="mt-1 text-base font-semibold text-white">Event form module</div>
+      </div>
+      <div class="grid grid-rows-[92px_1fr]">
+        <div class="border-b border-white/10 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Interface</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-200"><li>• One interface for create + edit</li><li>• Date and time merge happens once</li><li>• Submit shape stays stable</li></ul>
+        </div>
+        <div class="bg-slate-950 px-4 py-3">
+          <div class="text-[10px] uppercase tracking-[0.22em] text-slate-400">Implementation</div>
+          <ul class="mt-3 space-y-1.5 text-xs text-slate-300"><li>• event schema</li><li>• date/time normalization</li><li>• address + picker wiring</li><li>• request + toast handling</li><li>• create/edit adapters</li></ul>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Benefits</div>
+          <ul class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700"><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Locality: one place for date merging.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Leverage: both organizer flows share one interface.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Tests can pin the request payload once.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Delete two shallow wrappers, keep the behavior.</span></li></ul>
+        </section>
+      </div>
+    </article>
+  
+
+        
+    <article id="route-visualization" class="scroll-mt-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="max-w-3xl">
+          <h2 class="text-2xl font-semibold tracking-tight text-slate-950">Split route normalization from MapLibre rendering</h2>
+          <p class="mt-2 text-sm text-slate-500">The map module combines data shaping, color assignment, and imperative MapLibre calls in one effect; the page has to hand it raw event_data, so the interface is as wide as the implementation.</p>
+        </div>
+        <div class="shrink-0 rounded-full px-3 py-1 text-sm font-semibold bg-slate-100 text-slate-700 ring-1 ring-slate-200">Speculative</div>
+      </div>
+      <div class="mt-5 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Files</div>
+          <ul class="grid gap-2"><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/app/carpools/page.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/components/map/map.tsx</code></li><li class="break-all rounded-lg border border-slate-200 bg-white px-3 py-2"><code class="text-[13px] text-slate-700">src/components/map/map.css</code></li></ul>
+        </section>
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Problem</div>
+          <p class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm leading-6 text-slate-700">The map module combines data shaping, color assignment, and imperative MapLibre calls in one effect; the page has to hand it raw event_data, so the interface is as wide as the implementation.</p>
+          <div class="mt-4 text-xs uppercase tracking-[0.22em] text-slate-400">Solution</div>
+          <p class="mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-slate-700">Move route normalization and layer planning into an internal route-visualization module; leave CarpoolMap as a thin MapLibre adapter.</p>
+        </section>
+      </div>
+      <div class="mt-5 grid gap-4 xl:grid-cols-[1.35fr_0.65fr]">
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Before / After</div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <div class="mb-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">Before</div>
+              
+  <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <pre class="mermaid text-[13px]">
+flowchart LR
+  P[Carpools page] --> M[CarpoolMap]
+  M --> L[MapLibre map]
+  M --> S[Color palette]
+  M --> A[addSource / addLayer]
+  M --> D[Raw event_data]
+  D -. leaks through .-> M
+  classDef shallow fill:#fff7ed,stroke:#fb923c,stroke-width:1.5px,color:#0f172a;
+  classDef leak fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#7f1d1d;
+  class P,M,L,S,A shallow;
+  class D leak;
+  linkStyle 5 stroke:#dc2626,stroke-width:2px,stroke-dasharray:4 4;
+    </pre>
+  </div>
+
+            </div>
+            <div>
+              <div class="mb-2 text-[10px] uppercase tracking-[0.22em] text-slate-400">After</div>
+              
+  <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <pre class="mermaid text-[13px]">
+flowchart LR
+  P[Carpools page] --> N[Normalize jobs + carpools]
+  N --> V[Route-visualization module]
+  V --> M[MapLibre adapter]
+  V --> T[Layer plan]
+  classDef deep fill:#0f172a,stroke:#0f172a,stroke-width:2px,color:#fff;
+  classDef adapter fill:#ecfeff,stroke:#0891b2,stroke-width:1.5px,color:#0f172a;
+  classDef shallow fill:#f8fafc,stroke:#cbd5e1,stroke-width:1.5px,color:#0f172a;
+  class P,T shallow;
+  class N,V deep;
+  class M adapter;
+    </pre>
+  </div>
+
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="mb-3 text-xs uppercase tracking-[0.22em] text-slate-400">Benefits</div>
+          <ul class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700"><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Locality: route rules sit together.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Tests can cover normalization without a browser.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Map styling changes stop touching the page.</span></li><li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400"></span><span>Leverage: one planner can feed future renderers.</span></li></ul>
+        </section>
+      </div>
+    </article>
+  
+      </section>
+
+      <section id="top-recommendation" class="mt-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Top recommendation</p>
+            <h2 class="mt-2 text-2xl font-semibold tracking-tight text-slate-950"><a class="underline decoration-slate-300 decoration-2 underline-offset-4 hover:decoration-slate-500" href="#participant-intake">Deepen the participant intake module</a></h2>
+            <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600">It sits on the highest-traffic flow, duplicates the same form model across two pages, and turns ParticipantDetails into a shallow helper that leaks caller state into its interface.</p>
+          </div>
+          <div class="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900 ring-1 ring-emerald-200">Strong</div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
